@@ -50,12 +50,10 @@ class NotificationsServiceProvider extends ServiceProvider {
 	 */
 	protected function registerNotifications()
 	{
-		$this->app['notifications'] = $this->app->share(function($app)
+		$this->app->bindShared('notifications', function($app)
 		{
-			return new Notifications();
+			return $this->app->make('Cartalyst\Notifications\Notifications');
 		});
-
-		$this->app->alias('notifications', 'Cartalyst\Notifications\Notifications');
 	}
 
 	/**
