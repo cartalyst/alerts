@@ -17,69 +17,96 @@
  * @link       http://cartalyst.com
  */
 
-use Illuminate\Session\Store;
+use Illuminate\Container\Container;
 
 class Notifications {
 
 	/**
-	 * @var \Illuminate\Session\Store
+	 * Notifiers.
+	 *
+	 * @var array
 	 */
-	protected $session;
+	protected $notifiers = [];
 
 	/**
 	 * Constructor.
 	 *
-	 * @param  Store  $session
+	 * @param  \Illuminate\Container\Container  $container
 	 * @return void
 	 */
-	public function __construct(Store $session)
+	public function __construct(Container $container)
 	{
-		$this->session = $session;
+		$this->container = $container;
 	}
 
-	public function notify($message, $type = 'info', $preserve = false)
+	/**
+	 * Adds the given notifier.
+	 *
+	 * @param  string  $type
+	 * @param  \Cartalyst\Notifications\NotifierInterface $notifier
+	 * @return void
+	 */
+	public function addNotifier($type, NotifierInterface $notifier)
 	{
-		$messages = $this->session->get("notifications") ?: [];
-
-		$messages[$type][] = $message;
-
-		$this->session->flash("notifications", $messages);
+		$this->notifiers[$type] = $notifier;
 	}
 
-	public function flush($type)
+	/**
+	 * Removes the given type from notifiers.
+	 *
+	 * @param  string  $type
+	 * @return void
+	 */
+	public function removeNotifier($type)
 	{
-		$messages = $this->session->get("notifications") ?: [];
-
-		unset($messages[$type]);
-
-		$this->session->flash("notifications", $messages);
+		unset($this->notifiers[$type]);
 	}
 
-	protected function multiple($messages, $type)
+	/**
+	 * Returns all notifications.
+	 *
+	 * @return array
+	 */
+	public function all($type = null)
 	{
-		$this->flush($type);
+		$messages = [];
 
-		if ( ! is_array($messages))
+		$notifiers = $type ? [array_get($this->notifiers, $type)] : $this->notifiers;
+		$notifiers = array_filter($notifiers);
+
+		foreach ($notifiers as $notifier)
 		{
-			$messages = [$messages];
+			$messages = array_merge_recursive($messages, $notifier->all());
 		}
 
-		foreach ($messages as $key => $message)
-		{
-			$this->notify($message, $type, true);
-		}
+		return $messages;
 	}
 
-	public function __call($method, $arguments)
+	/**
+	 * Dynamically resolve notifiers from the IoC container.
+	 *
+	 * @param  string  $method
+	 * @param  array  $parameters
+	 * @return mixed
+	 */
+	public function __call($method, $parameters)
 	{
-		if (starts_with($method, 'flush'))
+		if (isset($this->notifiers[$method]))
 		{
-			$type = strtolower(substr($method, 5));
+			if (isset($parameters[0]))
+			{
+				$this->notifiers[$method]->setType($parameters[0]);
+			}
 
-			return $this->flush($type);
+			return $this->notifiers[$method];
 		}
 
-		return $this->multiple(head($arguments), $method);
+		if ( ! $parameters)
+		{
+			return $this->notifiers[$method] = $this->container->make(get_class($this->notifiers['default']));
+		}
+
+		return $this->notifiers['default']->notify($parameters[0], $method);
 	}
 
 }

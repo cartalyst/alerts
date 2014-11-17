@@ -18,7 +18,6 @@
  */
 
 use Illuminate\Support\ServiceProvider;
-use Cartalyst\Notifications\Notifications;
 
 class NotificationsServiceProvider extends ServiceProvider {
 
@@ -26,14 +25,6 @@ class NotificationsServiceProvider extends ServiceProvider {
 	 * {@inheritDoc}
 	 */
 	protected $defer = true;
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public function boot()
-	{
-		$this->package('cartalyst/notifications', 'cartalyst/notifications', __DIR__.'/..');
-	}
 
 	/**
 	 * {@inheritDoc}
@@ -50,9 +41,17 @@ class NotificationsServiceProvider extends ServiceProvider {
 	 */
 	protected function registerNotifications()
 	{
-		$this->app->bindShared('notifications', function($app)
+		$this->app->bindShared('alert', function($app)
 		{
-			return $this->app->make('Cartalyst\Notifications\Notifications');
+			$notifier = $this->app->make('Cartalyst\Notifications\Notifier');
+			$redirectionNotifier = $this->app->make('Cartalyst\Notifications\RedirectionNotifier');
+
+			$notifications = $this->app->make('Cartalyst\Notifications\Notifications');
+
+			$notifications->addNotifier('default', $notifier);
+			$notifications->addNotifier('redirection', $redirectionNotifier);
+
+			return $notifications;
 		});
 	}
 
@@ -62,7 +61,7 @@ class NotificationsServiceProvider extends ServiceProvider {
 	public function provides()
 	{
 		return [
-			'notifications',
+			'alert',
 		];
 	}
 

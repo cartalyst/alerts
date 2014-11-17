@@ -1,4 +1,4 @@
-<?php namespace Cartalyst\Notifications\Laravel\Facades;
+<?php namespace Cartalyst\Notifications;
 /**
  * Part of the Notifications package.
  *
@@ -17,16 +17,24 @@
  * @link       http://cartalyst.com
  */
 
-use Illuminate\Support\Facades\Facade;
+use Cartalyst\Notifications\View\Factory;
 
-class Notifications extends Facade {
+interface NotifierInterface {
 
 	/**
-	 * {@inheritDoc}
+	 * Sends notifications.
+	 *
+	 * @param  array|string  $messages
+	 * @param  string  $type
+	 * @return void
 	 */
-	protected static function getFacadeAccessor()
-	{
-		return 'notifications';
-	}
+	public function notify($messages, $type);
+
+	/**
+	 * Returns all notifications.
+	 *
+	 * @return array
+	 */
+	public function all();
 
 }
