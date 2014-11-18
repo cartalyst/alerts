@@ -17,8 +17,6 @@
  * @link       http://cartalyst.com
  */
 
-use Cartalyst\Notifications\View\Factory;
-
 class Notifier implements NotifierInterface {
 
 	/**
@@ -29,13 +27,9 @@ class Notifier implements NotifierInterface {
 	protected $notifications = [];
 
 	/**
-	 * Flashes notifications.
-	 *
-	 * @param  array|string  $messages
-	 * @param  string  $type
-	 * @return void
+	 * {@inheritDoc}
 	 */
-	public function notify($messages, $type)
+	public function notify($messages, $type, $area = 'default', $isFlash = false, $extra = null)
 	{
 		$this->remove($type);
 
@@ -46,16 +40,14 @@ class Notifier implements NotifierInterface {
 
 		foreach ($messages as $message)
 		{
-			$this->notifications[$type][] = $message;
+			$this->notifications[] = new Message($message, $type, $area, $isFlash, $extra);
 		}
 	}
 
 	/**
-	 * Returns all notifications.
-	 *
-	 * @return array
+	 * {@inheritDoc}
 	 */
-	public function all()
+	public function get()
 	{
 		return $this->notifications;
 	}
@@ -80,7 +72,24 @@ class Notifier implements NotifierInterface {
 	 */
 	public function __call($method, $parameters)
 	{
-		return $this->notify($parameters[0], $method);
+		list($type, $area, $extra) = $this->parseParameters($parameters);
+
+		return $this->notify($type, $method, $area, $extra);
+	}
+
+	/**
+	 * Parses parameters.
+	 *
+	 * @param  array  $parameters
+	 * @return array
+	 */
+	protected function parseParameters($parameters)
+	{
+		$type = array_get($parameters, 0);
+		$area = array_get($parameters, 1, 'default');
+		$extra = array_get($parameters, 2);
+
+		return [$type, $area, $extra];
 	}
 
 }

@@ -22,19 +22,22 @@ use Cartalyst\Notifications\View\Factory;
 interface NotifierInterface {
 
 	/**
-	 * Sends notifications.
+	 * Flashes notifications.
 	 *
 	 * @param  array|string  $messages
 	 * @param  string  $type
+	 * @param  string  $area
+	 * @param  bool  $isFlash
+	 * @param  string  $extra
 	 * @return void
 	 */
-	public function notify($messages, $type);
+	public function notify($messages, $type, $area = 'default', $isFlash = false, $extra = null);
 
 	/**
 	 * Returns all notifications.
 	 *
 	 * @return array
 	 */
-	public function all();
+	public function get();
 
 }

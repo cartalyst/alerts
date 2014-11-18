@@ -17,8 +17,6 @@
  * @link       http://cartalyst.com
  */
 
-use Illuminate\Container\Container;
-
 class Notifications {
 
 	/**
@@ -27,17 +25,6 @@ class Notifications {
 	 * @var array
 	 */
 	protected $notifiers = [];
-
-	/**
-	 * Constructor.
-	 *
-	 * @param  \Illuminate\Container\Container  $container
-	 * @return void
-	 */
-	public function __construct(Container $container)
-	{
-		$this->container = $container;
-	}
 
 	/**
 	 * Adds the given notifier.
@@ -63,27 +50,43 @@ class Notifications {
 	}
 
 	/**
-	 * Returns all notifications.
+	 * Returns all or a sepcific type of notifications.
 	 *
+	 * @param  string  $type
 	 * @return array
 	 */
-	public function all($type = null)
+	public function get($type = null)
 	{
 		$messages = [];
 
-		$notifiers = $type ? [array_get($this->notifiers, $type)] : $this->notifiers;
-		$notifiers = array_filter($notifiers);
-
-		foreach ($notifiers as $notifier)
+		foreach ($this->notifiers as $notifier)
 		{
-			$messages = array_merge_recursive($messages, $notifier->all());
+			$messages = array_merge_recursive($messages, $notifier->get());
+		}
+
+		if ($type)
+		{
+			$messages = array_filter($messages, function($message) use ($type)
+			{
+				return $message->area === $type;
+			});
 		}
 
 		return $messages;
 	}
 
 	/**
-	 * Dynamically resolve notifiers from the IoC container.
+	 * Returns the flash notifier.
+	 *
+	 * @return \Cartalyst\Notifications\FlashNotifier
+	 */
+	public function flash()
+	{
+		return $this->notifiers['flash'];
+	}
+
+	/**
+	 * Dynamically forward notifications.
 	 *
 	 * @param  string  $method
 	 * @param  array  $parameters
@@ -91,22 +94,7 @@ class Notifications {
 	 */
 	public function __call($method, $parameters)
 	{
-		if (isset($this->notifiers[$method]))
-		{
-			if (isset($parameters[0]))
-			{
-				$this->notifiers[$method]->setType($parameters[0]);
-			}
-
-			return $this->notifiers[$method];
-		}
-
-		if ( ! $parameters)
-		{
-			return $this->notifiers[$method] = $this->container->make(get_class($this->notifiers['default']));
-		}
-
-		return $this->notifiers['default']->notify($parameters[0], $method);
+		return call_user_func_array([$this->notifiers['default'], '__call'], [$method, $parameters]);
 	}
 
 }

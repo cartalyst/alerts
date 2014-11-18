@@ -35,7 +35,7 @@ class NotificationsServiceProvider extends ServiceProvider {
 	}
 
 	/**
-	 * Register the Notifications.
+	 * Register notifications.
 	 *
 	 * @return void
 	 */
@@ -44,12 +44,12 @@ class NotificationsServiceProvider extends ServiceProvider {
 		$this->app->bindShared('alert', function($app)
 		{
 			$notifier = $this->app->make('Cartalyst\Notifications\Notifier');
-			$redirectionNotifier = $this->app->make('Cartalyst\Notifications\RedirectionNotifier');
+			$flashNotifier = $this->app->make('Cartalyst\Notifications\FlashNotifier');
 
 			$notifications = $this->app->make('Cartalyst\Notifications\Notifications');
 
 			$notifications->addNotifier('default', $notifier);
-			$notifications->addNotifier('redirection', $redirectionNotifier);
+			$notifications->addNotifier('flash', $flashNotifier);
 
 			return $notifications;
 		});

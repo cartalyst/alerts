@@ -19,7 +19,7 @@
 
 use Illuminate\Session\Store;
 
-class RedirectionNotifier extends Notifier {
+class FlashNotifier extends Notifier {
 
 	/**
 	 * Session instance.
@@ -42,9 +42,9 @@ class RedirectionNotifier extends Notifier {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function notify($messages, $type)
+	public function notify($messages, $type, $area = 'default', $isFlash = false, $extra = null)
 	{
-		parent::notify($messages, $type);
+		parent::notify($messages, $type, $area, $isFlash, $extra);
 
 		$this->commit();
 	}
@@ -52,7 +52,7 @@ class RedirectionNotifier extends Notifier {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function all()
+	public function get()
 	{
 		return $this->session->get('cartalyst.notifications') ?: [];
 	}
