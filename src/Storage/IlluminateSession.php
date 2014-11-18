@@ -22,13 +22,6 @@ use Illuminate\Session\Store as SessionStore;
 class IlluminateSession implements StorageInterface {
 
 	/**
-	 * The key used in the Session.
-	 *
-	 * @var string
-	 */
-	protected $key = 'cartalyst_notifications';
-
-	/**
 	 * Session store object.
 	 *
 	 * @var \Illuminate\Session\Store
@@ -42,19 +35,9 @@ class IlluminateSession implements StorageInterface {
 	 * @param  string  $key
 	 * @return void
 	 */
-	public function __construct(SessionStore $session, $key = null)
+	public function __construct(SessionStore $session)
 	{
 		$this->session = $session;
-
-		$this->key = $key ?: $this->key;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public function getKey()
-	{
-		return $this->key;
 	}
 
 	/**
@@ -68,33 +51,9 @@ class IlluminateSession implements StorageInterface {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function put($value)
-	{
-		$this->session->put($this->getSessionKey(), $value);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public function has()
-	{
-		return $this->session->has($this->getSessionKey());
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
 	public function flash($key, $value)
 	{
 		return $this->session->flash($key, $value);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public function forget()
-	{
-		$this->session->forget($this->getSessionKey());
 	}
 
 }

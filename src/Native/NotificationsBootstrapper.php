@@ -40,11 +40,11 @@ class NotificationsBootstrapper {
 
 		$notifications->addNotifier('default', $notifier);
 
-		$session = $this->createSession();
-
-		$flashNotifier = new FlashNotifier($session);
-
-		$notifications->addNotifier('flash', $flashNotifier);
+		if ($session = $this->createSession())
+		{
+			$flashNotifier = new FlashNotifier($session);
+			$notifications->addNotifier('flash', $flashNotifier);
+		}
 
 		return $notifications;
 	}
@@ -59,13 +59,21 @@ class NotificationsBootstrapper {
 		return new Notifier();
 	}
 
+	/**
+	 * Creates a session instance.
+	 *
+	 * @return \Cartalyst\Notifications\Storage\StorageInterface|null
+	 */
 	protected function createSession()
 	{
-		$fileSessionHandler = new FileSessionHandler(new Filesystem(), __DIR__.'/../../../../../storage/sessions');
+		if (class_exists('Illuminate\Filesystem\Filesystem') && class_exists('Illuminate\Session\FileSessionHandler'))
+		{
+			$fileSessionHandler = new FileSessionHandler(new Filesystem(), __DIR__.'/../../../../../storage/sessions');
 
-		$store = new Store('foo', $fileSessionHandler);
+			$store = new Store('foo', $fileSessionHandler);
 
-		return new NativeSession($store);
+			return new NativeSession($store);
+		}
 	}
 
 }
