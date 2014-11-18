@@ -17,7 +17,7 @@
  * @link       http://cartalyst.com
  */
 
-use Illuminate\Session\Store;
+use Cartalyst\Notifications\Storage\StorageInterface;
 
 class FlashNotifier extends Notifier {
 
@@ -31,10 +31,10 @@ class FlashNotifier extends Notifier {
 	/**
 	 * Constructor.
 	 *
-	 * @param  \Illuminate\Session\Store  $session
+	 * @param  \Cartalyst\Notifications\Storage\StorageInterface  $session
 	 * @return void
 	 */
-	public function __construct(Store $session)
+	public function __construct(StorageInterface $session)
 	{
 		$this->session = $session;
 	}
@@ -42,7 +42,7 @@ class FlashNotifier extends Notifier {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function notify($messages, $type, $area = 'default', $isFlash = false, $extra = null)
+	public function notify($messages, $type, $area = 'default', $isFlash = true, $extra = null)
 	{
 		parent::notify($messages, $type, $area, $isFlash, $extra);
 
@@ -54,7 +54,7 @@ class FlashNotifier extends Notifier {
 	 */
 	public function get()
 	{
-		return $this->session->get('cartalyst.notifications', []);
+		return $this->session->get('cartalyst.notifications', []) ?: [];
 	}
 
 	/**
