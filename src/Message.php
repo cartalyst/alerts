@@ -41,18 +41,18 @@ class Message {
 	public $area;
 
 	/**
-	 * Message extras.
-	 *
-	 * @var string
-	 */
-	public $extra;
-
-	/**
 	 * Message.
 	 *
 	 * @var string
 	 */
 	public $message;
+
+	/**
+	 * Message class.
+	 *
+	 * @var string
+	 */
+	public $class;
 
 	/**
 	 * Constructor.
@@ -61,16 +61,15 @@ class Message {
 	 * @param  string  $type
 	 * @param  string  $area
 	 * @param  bool  $isFlash
-	 * @param  string  $extra
 	 * @return void
 	 */
-	public function __construct($message, $type, $area = 'default', $isFlash = false, $extra = null)
+	public function __construct($message, $type, $area = 'default', $isFlash = false, $class = null)
 	{
-		$this->isFlash = $isFlash;
+		$this->message = $message;
 		$this->type    = $type;
 		$this->area    = $area;
-		$this->extra   = $extra;
-		$this->message = $message;
+		$this->isFlash = $isFlash;
+		$this->class   = $class;
 	}
 
 }

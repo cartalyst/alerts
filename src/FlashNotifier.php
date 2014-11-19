@@ -31,11 +31,14 @@ class FlashNotifier extends Notifier {
 	/**
 	 * Constructor.
 	 *
+	 * @param  array  $config
 	 * @param  \Cartalyst\Notifications\Storage\StorageInterface  $session
 	 * @return void
 	 */
-	public function __construct(StorageInterface $session)
+	public function __construct(array $config = [], StorageInterface $session)
 	{
+		parent::__construct($config);
+
 		$this->session = $session;
 	}
 

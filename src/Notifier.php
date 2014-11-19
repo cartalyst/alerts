@@ -20,6 +20,24 @@
 class Notifier implements NotifierInterface {
 
 	/**
+	 * Configuration array.
+	 *
+	 * @var array
+	 */
+	protected $config = [];
+
+	/**
+	 * Constructor.
+	 *
+	 * @param  array  $config
+	 * @return void
+	 */
+	public function __construct(array $config = [])
+	{
+		$this->config = $config;
+	}
+
+	/**
 	 * Notifications.
 	 *
 	 * @var array
@@ -29,7 +47,7 @@ class Notifier implements NotifierInterface {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function notify($messages, $type, $area = 'default', $isFlash = false, $extra = null)
+	public function notify($messages, $type, $area = 'default', $isFlash = false, $class = null)
 	{
 		$this->remove($type);
 
@@ -40,7 +58,7 @@ class Notifier implements NotifierInterface {
 
 		foreach ($messages as $message)
 		{
-			$this->notifications[] = new Message($message, $type, $area, $isFlash, $extra);
+			$this->notifications[] = new Message($message, $type, $area, $isFlash, $class);
 		}
 	}
 
@@ -72,9 +90,11 @@ class Notifier implements NotifierInterface {
 	 */
 	public function __call($method, $parameters)
 	{
-		list($type, $area, $extra) = $this->parseParameters($parameters);
+		list($message, $area) = $this->parseParameters($parameters);
 
-		return $this->notify($type, $method, $area, $extra);
+		$class = array_get($this->config, $method, $method);
+
+		return $this->notify($message, $method, $area, false, $class);
 	}
 
 	/**
@@ -85,11 +105,10 @@ class Notifier implements NotifierInterface {
 	 */
 	protected function parseParameters($parameters)
 	{
-		$type = array_get($parameters, 0);
+		$message = array_get($parameters, 0);
 		$area = array_get($parameters, 1, 'default');
-		$extra = array_get($parameters, 2);
 
-		return [$type, $area, $extra];
+		return [$message, $area];
 	}
 
 }

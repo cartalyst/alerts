@@ -31,6 +31,14 @@ class NotificationsServiceProvider extends ServiceProvider {
 	/**
 	 * {@inheritDoc}
 	 */
+	public function boot()
+	{
+		$this->package('cartalyst/notifications', 'cartalyst/notifications', __DIR__.'/..');
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public function register()
 	{
 		$this->registerSession();
@@ -47,8 +55,9 @@ class NotificationsServiceProvider extends ServiceProvider {
 	{
 		$this->app->bindShared('alert', function($app)
 		{
-			$notifier      = $this->app->make('Cartalyst\Notifications\Notifier');
-			$flashNotifier = $this->app->make('Cartalyst\Notifications\FlashNotifier');
+			$config = $this->app['config']['cartalyst/notifications::config.classes'];
+			$notifier      = $this->app->make('Cartalyst\Notifications\Notifier', [$config]);
+			$flashNotifier = $this->app->make('Cartalyst\Notifications\FlashNotifier', [$config]);
 
 			$notifications = $this->app->make('Cartalyst\Notifications\Notifications');
 
