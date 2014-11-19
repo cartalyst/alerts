@@ -1,6 +1,6 @@
-<?php namespace Cartalyst\Notifications\Storage;
+<?php namespace Cartalyst\Alerts\Storage;
 /**
- * Part of the Notifications package.
+ * Part of the Alerts package.
  *
  * NOTICE OF LICENSE
  *
@@ -9,7 +9,7 @@
  * This source file is subject to the Cartalyst PSL License that is
  * bundled with this package in the license.txt file.
  *
- * @package    Notifications
+ * @package    Alerts
  * @version    0.1.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
@@ -23,7 +23,7 @@ use Illuminate\Session\Store as SessionStore;
 class NativeSession extends IlluminateSession implements StorageInterface {
 
 	/**
-	 * Creates a new Native Session driver for Notifications.
+	 * Creates a new Native Session driver for Alerts.
 	 *
 	 * @param  \Illuminate\Session\Store  $session
 	 * @param  string  $instance

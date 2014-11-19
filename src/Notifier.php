@@ -1,6 +1,6 @@
-<?php namespace Cartalyst\Notifications;
+<?php namespace Cartalyst\Alerts;
 /**
- * Part of the Notifications package.
+ * Part of the Alerts package.
  *
  * NOTICE OF LICENSE
  *
@@ -9,7 +9,7 @@
  * This source file is subject to the Cartalyst PSL License that is
  * bundled with this package in the license.txt file.
  *
- * @package    Notifications
+ * @package    Alerts
  * @version    0.1.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
@@ -38,16 +38,16 @@ class Notifier implements NotifierInterface {
 	}
 
 	/**
-	 * Notifications.
+	 * Alerts.
 	 *
 	 * @var array
 	 */
-	protected $notifications = [];
+	protected $alerts = [];
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function notify($messages, $type, $area = 'default', $isFlash = false, $class = null)
+	public function alert($messages, $type, $area = 'default', $isFlash = false, $class = null)
 	{
 		$this->remove($type);
 
@@ -58,7 +58,7 @@ class Notifier implements NotifierInterface {
 
 		foreach ($messages as $message)
 		{
-			$this->notifications[] = new Message($message, $type, $area, $isFlash, $class);
+			$this->alerts[] = new Message($message, $type, $area, $isFlash, $class);
 		}
 	}
 
@@ -67,7 +67,7 @@ class Notifier implements NotifierInterface {
 	 */
 	public function get()
 	{
-		return $this->notifications;
+		return $this->alerts;
 	}
 
 	/**
@@ -78,11 +78,11 @@ class Notifier implements NotifierInterface {
 	 */
 	protected function remove($type)
 	{
-		unset($this->notifications[$type]);
+		unset($this->alerts[$type]);
 	}
 
 	/**
-	 * Dynamically passes notifications to the view.
+	 * Dynamically passes alerts to the view.
 	 *
 	 * @param  string  $method
 	 * @param  array  $parameters
@@ -94,7 +94,7 @@ class Notifier implements NotifierInterface {
 
 		$class = array_get($this->config, $method, $method);
 
-		return $this->notify($message, $method, $area, false, $class);
+		return $this->alert($message, $method, $area, false, $class);
 	}
 
 	/**

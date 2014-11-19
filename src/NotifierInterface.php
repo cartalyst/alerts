@@ -1,6 +1,6 @@
-<?php namespace Cartalyst\Notifications;
+<?php namespace Cartalyst\Alerts;
 /**
- * Part of the Notifications package.
+ * Part of the Alerts package.
  *
  * NOTICE OF LICENSE
  *
@@ -9,7 +9,7 @@
  * This source file is subject to the Cartalyst PSL License that is
  * bundled with this package in the license.txt file.
  *
- * @package    Notifications
+ * @package    Alerts
  * @version    0.1.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
@@ -17,12 +17,12 @@
  * @link       http://cartalyst.com
  */
 
-use Cartalyst\Notifications\View\Factory;
+use Cartalyst\Alerts\View\Factory;
 
 interface NotifierInterface {
 
 	/**
-	 * Flashes notifications.
+	 * Flashes alerts.
 	 *
 	 * @param  array|string  $messages
 	 * @param  string  $type
@@ -31,10 +31,10 @@ interface NotifierInterface {
 	 * @param  string  $extra
 	 * @return void
 	 */
-	public function notify($messages, $type, $area = 'default', $isFlash = false, $extra = null);
+	public function alert($messages, $type, $area = 'default', $isFlash = false, $extra = null);
 
 	/**
-	 * Returns all notifications.
+	 * Returns all alerts.
 	 *
 	 * @return array
 	 */

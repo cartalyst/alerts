@@ -1,6 +1,6 @@
-<?php namespace Cartalyst\Notifications;
+<?php namespace Cartalyst\Alerts;
 /**
- * Part of the Notifications package.
+ * Part of the Alerts package.
  *
  * NOTICE OF LICENSE
  *
@@ -9,7 +9,7 @@
  * This source file is subject to the Cartalyst PSL License that is
  * bundled with this package in the license.txt file.
  *
- * @package    Notifications
+ * @package    Alerts
  * @version    0.1.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
@@ -17,7 +17,7 @@
  * @link       http://cartalyst.com
  */
 
-class Notifications {
+class Alerts {
 
 	/**
 	 * Notifiers.
@@ -30,7 +30,7 @@ class Notifications {
 	 * Adds the given notifier.
 	 *
 	 * @param  string  $type
-	 * @param  \Cartalyst\Notifications\NotifierInterface $notifier
+	 * @param  \Cartalyst\Alerts\NotifierInterface $notifier
 	 * @return void
 	 */
 	public function addNotifier($type, NotifierInterface $notifier)
@@ -50,7 +50,7 @@ class Notifications {
 	}
 
 	/**
-	 * Returns all or a sepcific type of notifications.
+	 * Returns all or a sepcific type of alerts.
 	 *
 	 * @param  string  $type
 	 * @return array
@@ -78,7 +78,7 @@ class Notifications {
 	/**
 	 * Returns the flash notifier.
 	 *
-	 * @return \Cartalyst\Notifications\FlashNotifier
+	 * @return \Cartalyst\Alerts\FlashNotifier
 	 */
 	public function flash()
 	{
@@ -86,7 +86,7 @@ class Notifications {
 	}
 
 	/**
-	 * Dynamically forward notifications.
+	 * Dynamically forward alerts.
 	 *
 	 * @param  string  $method
 	 * @param  array  $parameters

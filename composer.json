@@ -1,13 +1,13 @@
 {
-	"name": "cartalyst/notifications",
-	"description": "Notifications allows you to easily pass notifications to your views.",
+	"name": "cartalyst/alerts",
+	"description": "Alerts allows you to easily pass alert messages to your views.",
 	"keywords": [
 		"php",
 		"cartalyst",
 		"laravel",
 		"messages",
 		"flash",
-		"notifications"
+		"alerts"
 	],
 	"license": "proprietary",
 	"authors": [
@@ -51,7 +51,7 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"Cartalyst\\Notifications\\": "src/"
+			"Cartalyst\\Alerts\\": "src/"
 		}
 	},
 	"extra": {

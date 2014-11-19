@@ -1,6 +1,6 @@
-<?php namespace Cartalyst\Notifications\Native;
+<?php namespace Cartalyst\Alerts\Native;
 /**
- * Part of the Notifications package.
+ * Part of the Alerts package.
  *
  * NOTICE OF LICENSE
  *
@@ -9,7 +9,7 @@
  * This source file is subject to the Cartalyst PSL License that is
  * bundled with this package in the license.txt file.
  *
- * @package    Notifications
+ * @package    Alerts
  * @version    0.1.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
@@ -19,13 +19,13 @@
 
 use Illuminate\Session\Store;
 use Illuminate\Filesystem\Filesystem;
-use Cartalyst\Notifications\Notifier;
+use Cartalyst\Alerts\Notifier;
 use Illuminate\Session\FileSessionHandler;
-use Cartalyst\Notifications\Notifications;
-use Cartalyst\Notifications\FlashNotifier;
-use Cartalyst\Notifications\Storage\NativeSession;
+use Cartalyst\Alerts\Alerts;
+use Cartalyst\Alerts\FlashNotifier;
+use Cartalyst\Alerts\Storage\NativeSession;
 
-class NotificationsBootstrapper {
+class AlertsBootstrapper {
 
 	/**
 	 * Configuration array.
@@ -37,16 +37,16 @@ class NotificationsBootstrapper {
 	/**
 	 * Creates a sentinel instance.
 	 *
-	 * @return \Cartalyst\Notifications\Notifications
+	 * @return \Cartalyst\Alerts\Alerts
 	 */
-	public function createNotifications()
+	public function createAlerts()
 	{
-		$notifications = new Notifications();
+		$alerts = new Alerts();
 
-		$this->createNotifier($notifications);
-		$this->createFlashNotifier($notifications);
+		$this->createNotifier($alerts);
+		$this->createFlashNotifier($alerts);
 
-		return $notifications;
+		return $alerts;
 	}
 
 	/**
@@ -73,34 +73,34 @@ class NotificationsBootstrapper {
 	/**
 	 * Creates and adds a new notifier.
 	 *
-	 * @param  \Cartalyst\Notifications\Notifications  $notifications
+	 * @param  \Cartalyst\Alerts\Alerts  $alerts
 	 * @return void
 	 */
-	protected function createNotifier($notifications)
+	protected function createNotifier($alerts)
 	{
 		$notifier = new Notifier(static::$config);
-		$notifications->addNotifier('default', $notifier);
+		$alerts->addNotifier('default', $notifier);
 	}
 
 	/**
 	 * Creates and adds a new flash notifier.
 	 *
-	 * @param  \Cartalyst\Notifications\Notifications  $notifications
+	 * @param  \Cartalyst\Alerts\Alerts  $alerts
 	 * @return void
 	 */
-	protected function createFlashNotifier($notifications)
+	protected function createFlashNotifier($alerts)
 	{
 		if ($session = $this->createSession())
 		{
 			$flashNotifier = new FlashNotifier(static::$config, $session);
-			$notifications->addNotifier('flash', $flashNotifier);
+			$alerts->addNotifier('flash', $flashNotifier);
 		}
 	}
 
 	/**
 	 * Creates a session instance.
 	 *
-	 * @return \Cartalyst\Notifications\Storage\StorageInterface|null
+	 * @return \Cartalyst\Alerts\Storage\StorageInterface|null
 	 */
 	protected function createSession()
 	{

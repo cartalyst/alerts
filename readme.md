@@ -1,8 +1,8 @@
-# Notifications
+# Alerts
 
 [![Build Status](http://ci.cartalyst.com/build-status/svg/34)](http://ci.cartalyst.com/build-status/view/34)
 
-Notifications allows you to easily pass notifications to your views.
+Alerts allows you to easily pass alerts to your views.
 
 ## Package Story
 
@@ -14,15 +14,15 @@ Package history and capabilities.
 
 ## Installation
 
-Notifications is installable with Composer. Read further information on how to install.
+Alerts is installable with Composer. Read further information on how to install.
 
-[Installation Guide](https://cartalyst.com/manual/notifications/1.0#installation)
+[Installation Guide](https://cartalyst.com/manual/alerts/1.0#installation)
 
 ## Documentation
 
-Refer to the following guide on how to use the Notifications package.
+Refer to the following guide on how to use the Alerts package.
 
-[Documentation](https://cartalyst.com/manual/notifications/1.0)
+[Documentation](https://cartalyst.com/manual/alerts/1.0)
 
 ## Testing
 
@@ -50,7 +50,7 @@ Please see [contributing.md](contributing.md) for details.
 
 ## Support
 
-Have a bug? Please create an [issue](https://github.com/cartalyst/notifications/issues) here on GitHub that conforms with [necolas's guidelines](https://github.com/necolas/issue-guidelines).
+Have a bug? Please create an [issue](https://github.com/cartalyst/alerts/issues) here on GitHub that conforms with [necolas's guidelines](https://github.com/necolas/issue-guidelines).
 
 Follow us on Twitter, [@cartalyst](http://twitter.com/cartalyst).
 

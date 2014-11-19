@@ -1,6 +1,6 @@
-<?php namespace Cartalyst\Notifications\Native\Facades;
+<?php namespace Cartalyst\Alerts\Native\Facades;
 /**
- * Part of the Notifications package.
+ * Part of the Alerts package.
  *
  * NOTICE OF LICENSE
  *
@@ -9,7 +9,7 @@
  * This source file is subject to the Cartalyst PSL License that is
  * bundled with this package in the license.txt file.
  *
- * @package    Notifications
+ * @package    Alerts
  * @version    0.1.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
@@ -17,57 +17,57 @@
  * @link       http://cartalyst.com
  */
 
-use Cartalyst\Notifications\Native\NotificationsBootstrapper;
+use Cartalyst\Alerts\Native\AlertsBootstrapper;
 
 class Alert {
 
 	/**
-	 * The notifications instance.
+	 * The alerts instance.
 	 *
-	 * @var \Cartalyst\Notifications\Notifications
+	 * @var \Cartalyst\Alerts\Alerts
 	 */
-	protected $notifications;
+	protected $alerts;
 
 	/**
 	 * The Native Bootstraper instance.
 	 *
-	 * @var \Cartalyst\Notifications\Native\NotificationsBootstrapper
+	 * @var \Cartalyst\Alerts\Native\AlertsBootstrapper
 	 */
 	protected static $instance;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param  \Cartalyst\Notifications\Native\NotificationsBootstrapper  $bootstrapper
+	 * @param  \Cartalyst\Alerts\Native\AlertsBootstrapper  $bootstrapper
 	 * @return void
 	 */
-	public function __construct(NotificationsBootstrapper $bootstrapper = null)
+	public function __construct(AlertsBootstrapper $bootstrapper = null)
 	{
 		if ($bootstrapper === null)
 		{
-			$bootstrapper = new NotificationsBootstrapper;
+			$bootstrapper = new AlertsBootstrapper;
 		}
 
-		$this->notifications = $bootstrapper->createNotifications();
+		$this->alerts = $bootstrapper->createAlerts();
 	}
 
 	/**
-	 * Returns the Notifications instance.
+	 * Returns the Alerts instance.
 	 *
-	 * @return \Cartalyst\Notifications\Notifications
+	 * @return \Cartalyst\Alerts\Alerts
 	 */
-	public function getNotifications()
+	public function getAlerts()
 	{
-		return $this->notifications;
+		return $this->alerts;
 	}
 
 	/**
 	 * Creates a new Native Bootstraper instance.
 	 *
-	 * @param  \Cartalyst\Notifications\Native\NotificationsBootstrapper  $bootstrapper
+	 * @param  \Cartalyst\Alerts\Native\AlertsBootstrapper  $bootstrapper
 	 * @return void
 	 */
-	public static function instance(NotificationsBootstrapper $bootstrapper = null)
+	public static function instance(AlertsBootstrapper $bootstrapper = null)
 	{
 		if (static::$instance === null)
 		{
@@ -86,7 +86,7 @@ class Alert {
 	 */
 	public static function __callStatic($method, $args)
 	{
-		$instance = static::instance()->getNotifications();
+		$instance = static::instance()->getAlerts();
 
 		return call_user_func_array([$instance, $method], $args);
 	}
