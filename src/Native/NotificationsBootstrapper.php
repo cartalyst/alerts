@@ -28,35 +28,73 @@ use Cartalyst\Notifications\Storage\NativeSession;
 class NotificationsBootstrapper {
 
 	/**
+	 * Configuration array.
+	 *
+	 * @var array
+	 */
+	protected static $config = [];
+
+	/**
 	 * Creates a sentinel instance.
 	 *
 	 * @return \Cartalyst\Notifications\Notifications
 	 */
 	public function createNotifications()
 	{
-		$notifier = $this->createNotifier();
-
 		$notifications = new Notifications();
 
-		$notifications->addNotifier('default', $notifier);
-
-		if ($session = $this->createSession())
-		{
-			$flashNotifier = new FlashNotifier($session);
-			$notifications->addNotifier('flash', $flashNotifier);
-		}
+		$this->createNotifier($notifications);
+		$this->createFlashNotifier($notifications);
 
 		return $notifications;
 	}
 
 	/**
-	 * Creates a new notifier.
+	 * Sets the configuration array.
 	 *
-	 * @return \Cartalyst\Notifications\NotifierInterface
+	 * @param  array  $config
+	 * @return void
 	 */
-	protected function createNotifier()
+	public static function setConfig(array $config)
 	{
-		return new Notifier();
+		static::$config = $config;
+	}
+
+	/**
+	 * Returns the configuration array.
+	 *
+	 * @return array
+	 */
+	public static function getConfig()
+	{
+		return static::$config;
+	}
+
+	/**
+	 * Creates and adds a new notifier.
+	 *
+	 * @param  \Cartalyst\Notifications\Notifications  $notifications
+	 * @return void
+	 */
+	protected function createNotifier($notifications)
+	{
+		$notifier = new Notifier(static::$config);
+		$notifications->addNotifier('default', $notifier);
+	}
+
+	/**
+	 * Creates and adds a new flash notifier.
+	 *
+	 * @param  \Cartalyst\Notifications\Notifications  $notifications
+	 * @return void
+	 */
+	protected function createFlashNotifier($notifications)
+	{
+		if ($session = $this->createSession())
+		{
+			$flashNotifier = new FlashNotifier(static::$config, $session);
+			$notifications->addNotifier('flash', $flashNotifier);
+		}
 	}
 
 	/**
