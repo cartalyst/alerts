@@ -18,6 +18,8 @@
  */
 
 use Illuminate\Support\ServiceProvider;
+use Cartalyst\Notifications\Storage\StorageInterface;
+use Cartalyst\Notifications\Storage\IlluminateSession;
 
 class NotificationsServiceProvider extends ServiceProvider {
 
@@ -31,6 +33,8 @@ class NotificationsServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
+		$this->registerSession();
+
 		$this->registerNotifications();
 	}
 
@@ -43,7 +47,7 @@ class NotificationsServiceProvider extends ServiceProvider {
 	{
 		$this->app->bindShared('alert', function($app)
 		{
-			$notifier = $this->app->make('Cartalyst\Notifications\Notifier');
+			$notifier      = $this->app->make('Cartalyst\Notifications\Notifier');
 			$flashNotifier = $this->app->make('Cartalyst\Notifications\FlashNotifier');
 
 			$notifications = $this->app->make('Cartalyst\Notifications\Notifications');
@@ -52,6 +56,19 @@ class NotificationsServiceProvider extends ServiceProvider {
 			$notifications->addNotifier('flash', $flashNotifier);
 
 			return $notifications;
+		});
+	}
+
+	/**
+	 * Registers the session.
+	 *
+	 * @return void
+	 */
+	protected function registerSession()
+	{
+		$this->app['Cartalyst\Notifications\Storage\StorageInterface'] = $this->app->share(function($app)
+		{
+			return new IlluminateSession($app['session.store']);
 		});
 	}
 
