@@ -53,7 +53,7 @@ class AlertsServiceProvider extends ServiceProvider {
 	 */
 	protected function registerAlerts()
 	{
-		$this->app->bindShared('alert', function($app)
+		$this->app->bindShared('alerts', function($app)
 		{
 			$config = $this->app['config']['cartalyst/alerts::config.classes'];
 
@@ -88,7 +88,7 @@ class AlertsServiceProvider extends ServiceProvider {
 	public function provides()
 	{
 		return [
-			'alert',
+			'alerts',
 		];
 	}
 
