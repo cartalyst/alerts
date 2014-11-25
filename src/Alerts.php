@@ -127,13 +127,13 @@ class Alerts {
 	}
 
 	/**
-	 * Returns the flash notifier.
+	 * Returns the view notifier.
 	 *
 	 * @return \Cartalyst\Alerts\FlashNotifier
 	 */
-	public function flash()
+	public function view()
 	{
-		return $this->notifiers['flash'];
+		return $this->notifiers['view'];
 	}
 
 	/**

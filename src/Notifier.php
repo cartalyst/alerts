@@ -64,7 +64,7 @@ class Notifier implements NotifierInterface {
 			{
 				foreach ($message->toArray() as $key => $value)
 				{
-					$this->alerts[] = new Message($key, head($value), $type, $area, $isFlash, $class);
+					$this->alerts[] = new Message(head($value), $type, $area, $isFlash, $class, $key);
 				}
 			}
 			else

@@ -20,18 +20,11 @@
 class Message {
 
 	/**
-	 * The message identifier.
+	 * Message.
 	 *
 	 * @var string
 	 */
-	protected $key;
-
-	/**
-	 * Indicates whether the message is a flash message.
-	 *
-	 * @var bool
-	 */
-	public $isFlash;
+	public $message;
 
 	/**
 	 * Message type.
@@ -48,11 +41,11 @@ class Message {
 	public $area;
 
 	/**
-	 * Message.
+	 * Indicates whether the message is a flash message.
 	 *
-	 * @var string
+	 * @var bool
 	 */
-	public $message;
+	public $isFlash;
 
 	/**
 	 * Message class.
@@ -60,6 +53,13 @@ class Message {
 	 * @var string
 	 */
 	public $class;
+
+	/**
+	 * The message identifier.
+	 *
+	 * @var string
+	 */
+	protected $key;
 
 	/**
 	 * Constructor.
@@ -71,14 +71,14 @@ class Message {
 	 * @param  bool  $isFlash
 	 * @return void
 	 */
-	public function __construct($key = null, $message, $type, $area = 'default', $isFlash = false, $class = null)
+	public function __construct($message, $type, $area = 'default', $isFlash = false, $class = null, $key = null)
 	{
-		$this->key     = $key;
 		$this->message = $message;
 		$this->type    = $type;
 		$this->area    = $area;
 		$this->isFlash = $isFlash;
 		$this->class   = $class;
+		$this->key     = $key;
 	}
 
 	/**
