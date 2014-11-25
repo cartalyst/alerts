@@ -55,13 +55,13 @@ class Alerts {
 	 * @param  string  $type
 	 * @return array
 	 */
-	public function get($type = null)
+	public function all($type = null)
 	{
 		$messages = [];
 
 		foreach ($this->notifiers as $notifier)
 		{
-			$messages = array_merge_recursive($messages, $notifier->get());
+			$messages = array_merge_recursive($messages, $notifier->all());
 		}
 
 		if ($type)
@@ -73,6 +73,57 @@ class Alerts {
 		}
 
 		return $messages;
+	}
+
+	/**
+	 * Returns all except the given types of alerts.
+	 *
+	 * @param  array  $types
+	 * @return array
+	 */
+	public function except($types = [])
+	{
+		if ( ! is_array($types))
+		{
+			$types = [$types];
+		}
+
+		$messages = [];
+
+		foreach ($this->notifiers as $notifier)
+		{
+			$messages = array_merge_recursive($messages, $notifier->all());
+		}
+
+		foreach ($types as $type)
+		{
+			$messages = array_filter($messages, function($message) use ($type)
+			{
+				return $message->area !== $type;
+			});
+		}
+
+		return $messages;
+	}
+
+	/**
+	 * Returns form element errors.
+	 *
+	 * @param  string  $key
+	 * @param  string  $alert
+	 * @return string|null
+	 */
+	public function form($key, $alert = null)
+	{
+		$messages = $this->all('form') ?: [];
+
+		foreach ($messages as $message)
+		{
+			if ($message->getKey() === $key)
+			{
+				return $alert ?: $message->message;
+			}
+		}
 	}
 
 	/**

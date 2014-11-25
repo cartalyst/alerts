@@ -17,6 +17,8 @@
  * @link       http://cartalyst.com
  */
 
+use Illuminate\Support\MessageBag;
+
 class Notifier implements NotifierInterface {
 
 	/**
@@ -58,14 +60,24 @@ class Notifier implements NotifierInterface {
 
 		foreach ($messages as $message)
 		{
-			$this->alerts[] = new Message($message, $type, $area, $isFlash, $class);
+			if ($message instanceof MessageBag)
+			{
+				foreach ($message->toArray() as $key => $value)
+				{
+					$this->alerts[] = new Message($key, head($value), $type, $area, $isFlash, $class);
+				}
+			}
+			else
+			{
+				$this->alerts[] = new Message($message, $type, $area, $isFlash, $class);
+			}
 		}
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function get()
+	public function all()
 	{
 		return $this->alerts;
 	}

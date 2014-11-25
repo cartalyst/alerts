@@ -55,7 +55,7 @@ class FlashNotifier extends Notifier {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function get()
+	public function all()
 	{
 		return $this->session->get('cartalyst.alerts', []) ?: [];
 	}
