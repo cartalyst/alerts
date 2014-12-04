@@ -78,15 +78,12 @@ class Alerts {
 	/**
 	 * Returns all except the given types of alerts.
 	 *
-	 * @param  array  $types
+	 * @param  array|string  $types
 	 * @return array
 	 */
-	public function except($types = [])
+	public function except($types)
 	{
-		if ( ! is_array($types))
-		{
-			$types = [$types];
-		}
+		if ( ! is_array($types)) $types = (array) $types;
 
 		$messages = [];
 
