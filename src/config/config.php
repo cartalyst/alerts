@@ -1,4 +1,5 @@
-<?php namespace Cartalyst\Alerts;
+<?php
+
 /**
  * Part of the Alerts package.
  *
@@ -19,22 +20,22 @@
 
 return [
 
-	/*
-	|--------------------------------------------------------------------------
-	| Classes
-	|--------------------------------------------------------------------------
-	|
-	| The class property on alerts defaults to the alert type by default.
-	| To override classes of a specific alert type, specify it here as follows:
-	|
-	| 'error' => 'danger'
-	|
-	| This will set the class property on all error alerts to danger.
-	|
-	*/
+    /*
+    |--------------------------------------------------------------------------
+    | Classes
+    |--------------------------------------------------------------------------
+    |
+    | The class property on alerts defaults to the alert type by default.
+    | To override classes of a specific alert type, specify it here as follows:
+    |
+    | 'error' => 'danger'
+    |
+    | This will set the class property on all error alerts to danger.
+    |
+    */
 
-	'classes' => [
+    'classes' => [
 
-	],
+    ],
 
 ];

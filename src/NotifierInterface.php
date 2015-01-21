@@ -1,4 +1,5 @@
-<?php namespace Cartalyst\Alerts;
+<?php
+
 /**
  * Part of the Alerts package.
  *
@@ -17,27 +18,28 @@
  * @link       http://cartalyst.com
  */
 
+namespace Cartalyst\Alerts;
+
 use Cartalyst\Alerts\View\Factory;
 
-interface NotifierInterface {
+interface NotifierInterface
+{
+    /**
+     * Flashes alerts.
+     *
+     * @param  array|string  $messages
+     * @param  string  $type
+     * @param  string  $area
+     * @param  bool  $isFlash
+     * @param  string  $extra
+     * @return void
+     */
+    public function alert($messages, $type, $area = 'default', $isFlash = false, $extra = null);
 
-	/**
-	 * Flashes alerts.
-	 *
-	 * @param  array|string  $messages
-	 * @param  string  $type
-	 * @param  string  $area
-	 * @param  bool  $isFlash
-	 * @param  string  $extra
-	 * @return void
-	 */
-	public function alert($messages, $type, $area = 'default', $isFlash = false, $extra = null);
-
-	/**
-	 * Returns all alerts.
-	 *
-	 * @return array
-	 */
-	public function all();
-
+    /**
+     * Returns all alerts.
+     *
+     * @return array
+     */
+    public function all();
 }

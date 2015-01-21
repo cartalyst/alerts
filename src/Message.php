@@ -1,4 +1,5 @@
-<?php namespace Cartalyst\Alerts;
+<?php
+
 /**
  * Part of the Alerts package.
  *
@@ -17,78 +18,79 @@
  * @link       http://cartalyst.com
  */
 
-class Message {
+namespace Cartalyst\Alerts;
 
-	/**
-	 * Message.
-	 *
-	 * @var string
-	 */
-	public $message;
+class Message
+{
+    /**
+     * Message.
+     *
+     * @var string
+     */
+    public $message;
 
-	/**
-	 * Message type.
-	 *
-	 * @var string
-	 */
-	public $type;
+    /**
+     * Message type.
+     *
+     * @var string
+     */
+    public $type;
 
-	/**
-	 * Message area.
-	 *
-	 * @var string
-	 */
-	public $area;
+    /**
+     * Message area.
+     *
+     * @var string
+     */
+    public $area;
 
-	/**
-	 * Indicates whether the message is a flash message.
-	 *
-	 * @var bool
-	 */
-	public $isFlash;
+    /**
+     * Indicates whether the message is a flash message.
+     *
+     * @var bool
+     */
+    public $isFlash;
 
-	/**
-	 * Message class.
-	 *
-	 * @var string
-	 */
-	public $class;
+    /**
+     * Message class.
+     *
+     * @var string
+     */
+    public $class;
 
-	/**
-	 * The message identifier.
-	 *
-	 * @var string
-	 */
-	protected $key;
+    /**
+     * The message identifier.
+     *
+     * @var string
+     */
+    protected $key;
 
-	/**
-	 * Constructor.
-	 *
-	 * @param  string  $key
-	 * @param  string  $message
-	 * @param  string  $type
-	 * @param  string  $area
-	 * @param  bool  $isFlash
-	 * @return void
-	 */
-	public function __construct($message, $type, $area = 'default', $isFlash = false, $class = null, $key = null)
-	{
-		$this->message = $message;
-		$this->type    = $type;
-		$this->area    = $area;
-		$this->isFlash = $isFlash;
-		$this->class   = $class;
-		$this->key     = $key;
-	}
+    /**
+     * Constructor.
+     *
+     * @param  string  $key
+     * @param  string  $message
+     * @param  string  $type
+     * @param  string  $area
+     * @param  bool  $isFlash
+     * @return void
+     */
+    public function __construct($message, $type, $area = 'default', $isFlash = false, $class = null, $key = null)
+    {
+        $this->message = $message;
+        $this->type    = $type;
+        $this->area    = $area;
+        $this->isFlash = $isFlash;
+        $this->class   = $class;
+        $this->key     = $key;
+    }
 
-	/**
-	 * Returns the message identifier.
-	 *
-	 * @return string
-	 */
-	public function getKey()
-	{
-		return $this->key;
-	}
-
+    /**
+     * Returns the message identifier.
+     *
+     * @return string
+     */
+    public function getKey()
+    {
+        return $this->key;
+    }
 }

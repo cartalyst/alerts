@@ -1,4 +1,5 @@
-<?php namespace Cartalyst\Alerts\Laravel;
+<?php
+
 /**
  * Part of the Alerts package.
  *
@@ -17,79 +18,78 @@
  * @link       http://cartalyst.com
  */
 
+namespace Cartalyst\Alerts\Laravel;
+
 use Illuminate\Support\ServiceProvider;
 use Cartalyst\Alerts\Storage\StorageInterface;
 use Cartalyst\Alerts\Storage\IlluminateSession;
 
-class AlertsServiceProvider extends ServiceProvider {
+class AlertsServiceProvider extends ServiceProvider
+{
+    /**
+     * {@inheritDoc}
+     */
+    protected $defer = true;
 
-	/**
-	 * {@inheritDoc}
-	 */
-	protected $defer = true;
+    /**
+     * {@inheritDoc}
+     */
+    public function boot()
+    {
+        $this->package('cartalyst/alerts', 'cartalyst/alerts', __DIR__.'/..');
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public function boot()
-	{
-		$this->package('cartalyst/alerts', 'cartalyst/alerts', __DIR__.'/..');
-	}
+    /**
+     * {@inheritDoc}
+     */
+    public function register()
+    {
+        $this->registerSession();
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public function register()
-	{
-		$this->registerSession();
+        $this->registerAlerts();
+    }
 
-		$this->registerAlerts();
-	}
+    /**
+     * Register alerts.
+     *
+     * @return void
+     */
+    protected function registerAlerts()
+    {
+        $this->app->bindShared('alerts', function ($app) {
+            $config = $this->app['config']['cartalyst/alerts::config.classes'];
 
-	/**
-	 * Register alerts.
-	 *
-	 * @return void
-	 */
-	protected function registerAlerts()
-	{
-		$this->app->bindShared('alerts', function($app)
-		{
-			$config = $this->app['config']['cartalyst/alerts::config.classes'];
+            $notifier      = $this->app->make('Cartalyst\Alerts\Notifier', [$config]);
+            $flashNotifier = $this->app->make('Cartalyst\Alerts\FlashNotifier', [$config]);
 
-			$notifier      = $this->app->make('Cartalyst\Alerts\Notifier', [$config]);
-			$flashNotifier = $this->app->make('Cartalyst\Alerts\FlashNotifier', [$config]);
+            $alerts = $this->app->make('Cartalyst\Alerts\Alerts');
 
-			$alerts = $this->app->make('Cartalyst\Alerts\Alerts');
+            $alerts->addNotifier('default', $flashNotifier);
+            $alerts->addNotifier('view', $notifier);
 
-			$alerts->addNotifier('default', $flashNotifier);
-			$alerts->addNotifier('view', $notifier);
+            return $alerts;
+        });
+    }
 
-			return $alerts;
-		});
-	}
+    /**
+     * Registers the session.
+     *
+     * @return void
+     */
+    protected function registerSession()
+    {
+        $this->app['Cartalyst\Alerts\Storage\StorageInterface'] = $this->app->share(function ($app) {
+            return new IlluminateSession($app['session.store']);
+        });
+    }
 
-	/**
-	 * Registers the session.
-	 *
-	 * @return void
-	 */
-	protected function registerSession()
-	{
-		$this->app['Cartalyst\Alerts\Storage\StorageInterface'] = $this->app->share(function($app)
-		{
-			return new IlluminateSession($app['session.store']);
-		});
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public function provides()
-	{
-		return [
-			'alerts',
-		];
-	}
-
+    /**
+     * {@inheritDoc}
+     */
+    public function provides()
+    {
+        return [
+            'alerts',
+        ];
+    }
 }

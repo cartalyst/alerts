@@ -1,4 +1,5 @@
-<?php namespace Cartalyst\Alerts\Storage;
+<?php
+
 /**
  * Part of the Alerts package.
  *
@@ -17,23 +18,24 @@
  * @link       http://cartalyst.com
  */
 
-interface StorageInterface {
+namespace Cartalyst\Alerts\Storage;
 
-	/**
-	 * Get the value from the storage.
-	 *
-	 * @param  string  $key
-	 * @return mixed
-	 */
-	public function get($key);
+interface StorageInterface
+{
+    /**
+     * Get the value from the storage.
+     *
+     * @param  string  $key
+     * @return mixed
+     */
+    public function get($key);
 
-	/**
-	 * Put a value.
-	 *
-	 * @param  string  $key
-	 * @param  mixed  $value
-	 * @return void
-	 */
-	public function flash($key, $value);
-
+    /**
+     * Put a value.
+     *
+     * @param  string  $key
+     * @param  mixed  $value
+     * @return void
+     */
+    public function flash($key, $value);
 }

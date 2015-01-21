@@ -1,4 +1,5 @@
-<?php namespace Cartalyst\Alerts\Laravel\Facades;
+<?php
+
 /**
  * Part of the Alerts package.
  *
@@ -17,16 +18,17 @@
  * @link       http://cartalyst.com
  */
 
+namespace Cartalyst\Alerts\Laravel\Facades;
+
 use Illuminate\Support\Facades\Facade;
 
-class Alert extends Facade {
-
-	/**
-	 * {@inheritDoc}
-	 */
-	protected static function getFacadeAccessor()
-	{
-		return 'alerts';
-	}
-
+class Alert extends Facade
+{
+    /**
+     * {@inheritDoc}
+     */
+    protected static function getFacadeAccessor()
+    {
+        return 'alerts';
+    }
 }

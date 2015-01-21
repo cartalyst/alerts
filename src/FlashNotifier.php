@@ -1,4 +1,5 @@
-<?php namespace Cartalyst\Alerts;
+<?php
+
 /**
  * Part of the Alerts package.
  *
@@ -17,55 +18,56 @@
  * @link       http://cartalyst.com
  */
 
+namespace Cartalyst\Alerts;
+
 use Cartalyst\Alerts\Storage\StorageInterface;
 
-class FlashNotifier extends Notifier {
+class FlashNotifier extends Notifier
+{
+    /**
+     * Session instance.
+     *
+     * @var \Illuminate\Session\Store
+     */
+    protected $session;
 
-	/**
-	 * Session instance.
-	 *
-	 * @var \Illuminate\Session\Store
-	 */
-	protected $session;
+    /**
+     * Constructor.
+     *
+     * @param  array  $config
+     * @param  \Cartalyst\Alerts\Storage\StorageInterface  $session
+     * @return void
+     */
+    public function __construct(array $config = [], StorageInterface $session)
+    {
+        parent::__construct($config);
 
-	/**
-	 * Constructor.
-	 *
-	 * @param  array  $config
-	 * @param  \Cartalyst\Alerts\Storage\StorageInterface  $session
-	 * @return void
-	 */
-	public function __construct(array $config = [], StorageInterface $session)
-	{
-		parent::__construct($config);
+        $this->session = $session;
+    }
 
-		$this->session = $session;
-	}
+    /**
+     * {@inheritDoc}
+     */
+    public function alert($messages, $type, $area = 'default', $isFlash = true, $extra = null)
+    {
+        parent::alert($messages, $type, $area, $isFlash, $extra);
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public function alert($messages, $type, $area = 'default', $isFlash = true, $extra = null)
-	{
-		parent::alert($messages, $type, $area, $isFlash, $extra);
+        $this->commit();
+    }
 
-		$this->commit();
-	}
+    /**
+     * {@inheritDoc}
+     */
+    public function all()
+    {
+        return $this->session->get('cartalyst.alerts', []) ?: [];
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public function all()
-	{
-		return $this->session->get('cartalyst.alerts', []) ?: [];
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	protected function commit()
-	{
-		$this->session->flash('cartalyst.alerts', $this->alerts);
-	}
-
+    /**
+     * {@inheritDoc}
+     */
+    protected function commit()
+    {
+        $this->session->flash('cartalyst.alerts', $this->alerts);
+    }
 }
