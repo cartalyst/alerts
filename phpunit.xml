@@ -12,12 +12,15 @@
 >
 	<testsuites>
 		<testsuite name="Alerts Package Test Suite">
-			<directory>./tests/</directory>
+			<directory suffix=".php">./tests/</directory>
 		</testsuite>
 	</testsuites>
 	<filter>
-		<whitelist addUncoveredFilesFromWhitelist="false">
+		<whitelist>
 			<directory suffix=".php">./src/</directory>
 		</whitelist>
 	</filter>
+	<logging>
+		<log type="coverage-text" target="php://stdout" showUncoveredFiles="true"/>
+	</logging>
 </phpunit>
