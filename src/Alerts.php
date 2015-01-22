@@ -30,6 +30,13 @@ class Alerts
     protected $notifiers = [];
 
     /**
+     * Filtered alerts.
+     *
+     * @var array
+     */
+    protected $filteredAlerts = [];
+
+    /**
      * Adds the given notifier.
      *
      * @param  string  $type
@@ -53,49 +60,81 @@ class Alerts
     }
 
     /**
-     * Returns all or the given areas of alerts.
+     * Returns the filtered alerts.
      *
-     * @param  array|string  $areas
-     * @param  array|string  $types
      * @return array
      */
-    public function get($areas = null, $types = null)
+    public function get()
     {
-        return $this->filter($areas, $types);
+        $filteredAlerts = $this->filteredAlerts;
+
+        $this->filteredAlerts = [];
+
+        return $filteredAlerts;
+    }
+
+    /**
+     * Sets all alerts on the filteredAlerts.
+     *
+     * @return self
+     */
+    public function all()
+    {
+        $this->filter();
+
+        return $this;
     }
 
     /**
      * Filters alerts based on the given areas.
      *
      * @param  string|array  $areas
-     * @return array
+     * @return self
      */
     public function whereArea($areas)
     {
-        return $this->filter($areas);
+        $this->filter($areas);
+
+        return $this;
     }
 
     /**
      * Filters alerts based on the given types.
      *
      * @param  string|array  $types
-     * @return array
+     * @return self
      */
     public function whereType($types)
     {
-        return $this->filter(null, $types);
+        $this->filter(null, $types);
+
+        return $this;
     }
 
     /**
-     * Returns all except the given types of alerts.
+     * Filters alerts excluding the given areas.
      *
-     * @param  array|string  $areas
-     * @param  array|string  $types
-     * @return array
+     * @param  string|array  $areas
+     * @return self
      */
-    public function except($areas, $types = [])
+    public function whereNotArea($areas)
     {
-        return $this->filter($areas, $types, true);
+        $this->filter($areas, null, true);
+
+        return $this;
+    }
+
+    /**
+     * Filters alerts excluding the given types.
+     *
+     * @param  string|array  $types
+     * @return self
+     */
+    public function whereNotType($types)
+    {
+        $this->filter(null, $types, true);
+
+        return $this;
     }
 
     /**
@@ -107,7 +146,7 @@ class Alerts
      */
     public function form($key, $alert = null)
     {
-        $messages = $this->whereArea('form') ?: [];
+        $messages = $this->whereArea('form')->get() ?: [];
 
         foreach ($messages as $message) {
             if ($message->getKey() === $key) {
@@ -156,10 +195,12 @@ class Alerts
             $types = (array) $types;
         }
 
-        $messages = [];
+        $messages = $this->filteredAlerts;
 
-        foreach ($this->notifiers as $notifier) {
-            $messages = array_merge_recursive($messages, $notifier->all());
+        if ( ! $this->filteredAlerts) {
+            foreach ($this->notifiers as $notifier) {
+                $messages = array_merge_recursive($messages, $notifier->all());
+            }
         }
 
         if ($areas) {
@@ -190,6 +231,6 @@ class Alerts
             }
         }
 
-        return $messages;
+        $this->filteredAlerts = $messages;
     }
 }
