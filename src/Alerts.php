@@ -56,6 +56,7 @@ class Alerts
      * Returns all or the given areas of alerts.
      *
      * @param  array|string  $areas
+     * @param  array|string  $types
      * @return array
      */
     public function get($areas = null, $types = null)
