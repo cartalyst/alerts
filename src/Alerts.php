@@ -20,61 +20,101 @@
 
 namespace Cartalyst\Alerts;
 
+use Cartalyst\Alerts\Notifiers\NotifierInterface;
+
 class Alerts
 {
     /**
-     * Filters.
-     *
-     * @var array
-     */
-    protected $default;
-
-    /**
-     * Notifiers.
+     * The registered notifiers.
      *
      * @var array
      */
     protected $notifiers = [];
 
     /**
-     * Filtered alerts.
+     * The default notifier.
      *
-     * @var array
+     * @var string
      */
+    protected $defaultNotifier;
+
+    protected $filters = [];
+
     protected $filteredAlerts = [];
 
     /**
-     * Filters.
+     * Returns all the registered notifiers.
      *
-     * @var array
+     * @return array
      */
-    protected $filters = [];
+    public function getNotifiers()
+    {
+        return $this->notifiers;
+    }
 
     /**
      * Adds the given notifier.
      *
-     * @param  string  $type
-     * @param  \Cartalyst\Alerts\NotifierInterface  $notifier
-     * @return void
+     * @param  \Cartalyst\Alerts\Notifiers\NotifierInterface  $notifier
+     * @return $this
      */
-    public function addNotifier($type, NotifierInterface $notifier)
+    public function addNotifier(NotifierInterface $notifier)
     {
-        $this->notifiers[$type] = $notifier;
+        $this->notifiers[$notifier->getName()] = $notifier;
+
+        return $this;
     }
 
     /**
-     * Removes the given type from notifiers.
+     * Removes the given notifier.
      *
-     * @param  string  $type
-     * @return void
+     * @param  string  $name
+     * @return $this
      */
-    public function removeNotifier($type)
+    public function removeNotifier($name)
     {
-        unset($this->notifiers[$type]);
+        unset($this->notifiers[$name]);
+
+        return $this;
     }
 
     /**
-     * Returns the filtered alerts.
+     * Returns the default notifier name.
+     *
+     * @return string
+     */
+    public function getDefaultNotifier()
+    {
+        return $this->defaultNotifier;
+    }
+
+    /**
+     * Sets the default notifier.
+     *
+     * @param  string  $notifier
+     * @return $this
+     */
+    public function setDefaultNotifier($notifier)
+    {
+        $this->defaultNotifier = $notifier;
+
+        return $this;
+    }
+
+    /**
+     * Returns the given notifier.
+     *
+     * @param  string  $name
+     * @param  string  $default
+     * @return \Cartalyst\Alerts\Notifiers\NotifierInterface|null
+     */
+    public function notifier($name, $default = null)
+    {
+        return array_get($this->notifiers, $name, $default);
+    }
+
+    /**
+     * Returns the alerts with the applied filters.
      *
      * @return array
      */
@@ -82,7 +122,7 @@ class Alerts
     {
         // Retrieve all alerts if no filters are assigned
         if ( ! $this->filters) {
-            $this->filter();
+            return $this->getAllAlerts();
         }
 
         $filteredAlerts = $this->filteredAlerts;
@@ -95,186 +135,126 @@ class Alerts
     }
 
     /**
-     * Filters alerts based on the given areas.
-     *
-     * @param  string|array  $areas
-     * @return self
-     */
-    public function whereArea($areas)
-    {
-        $this->filter($areas);
-
-        return $this;
-    }
-
-    /**
-     * Filters alerts based on the given types.
-     *
-     * @param  string|array  $types
-     * @return self
-     */
-    public function whereType($types)
-    {
-        $this->filter(null, $types);
-
-        return $this;
-    }
-
-    /**
-     * Filters alerts excluding the given areas.
-     *
-     * @param  string|array  $areas
-     * @return self
-     */
-    public function whereNotArea($areas)
-    {
-        $this->filter($areas, null, true);
-
-        return $this;
-    }
-
-    /**
-     * Filters alerts excluding the given types.
-     *
-     * @param  string|array  $types
-     * @return self
-     */
-    public function whereNotType($types)
-    {
-        $this->filter(null, $types, true);
-
-        return $this;
-    }
-
-    /**
-     * Returns form element errors.
-     *
-     * @param  string  $key
-     * @param  string  $alert
-     * @return string|null
-     */
-    public function form($key, $alert = null)
-    {
-        $messages = $this->whereArea('form')->get() ?: [];
-
-        foreach ($messages as $message) {
-            if ($message->getKey() === $key) {
-                return $alert ?: $message->message;
-            }
-        }
-    }
-
-    /**
-     * Returns the given notifier.
-     *
-     * @return \Cartalyst\Alerts\FlashNotifier
-     */
-    public function notifier($notifier)
-    {
-        return array_get($this->notifiers, $notifier, array_get($this->notifiers, $this->default));
-    }
-
-    /**
-     * Sets the default notifier.
-     *
-     * @param  string  $notifier
-     * @return void
-     */
-    public function setDefaultNotifier($notifier)
-    {
-        $this->default = $notifier;
-    }
-
-    /**
-     * Returns the default notifier key.
-     *
-     * @return string
-     */
-    public function getDefaultNotifier()
-    {
-        return $this->default;
-    }
-
-    /**
      * Dynamically forward alerts.
      *
      * @param  string  $method
      * @param  array  $parameters
      * @return mixed
      */
-    public function __call($method, $parameters)
+    public function __call($method, array $parameters = [])
     {
         if ($notifier = array_get($this->notifiers, $method)) {
             return $notifier;
         }
 
-        return call_user_func_array([$this->notifiers[$this->default], '__call'], [$method, $parameters]);
+        return call_user_func_array(
+            [ $this->notifiers[$this->defaultNotifier], '__call' ],
+            [ $method, $parameters ]
+        );
     }
 
     /**
-     * Returns all or the given filtered alerts.
+     * Filter alerts based on the given areas.
      *
-     * @param  array|string  $areas
-     * @param  array|string  $types
-     * @param  bool  $exclude
-     * @return array
+     * @param  string|array  $areas
+     * @return self
      */
-    protected function filter($areas = null, $types = null, $exclude = false)
+    public function whereArea($areas)
     {
-        if ( ! is_array($areas)) {
-            $areas = (array) $areas;
+        $this->registerFilter('area', $areas);
+
+        return $this;
+    }
+
+    /**
+     * Filter alerts excluding the given areas.
+     *
+     * @param  string|array  $areas
+     * @return self
+     */
+    public function whereNotArea($areas)
+    {
+        $this->registerFilter('area', $areas, true);
+
+        return $this;
+    }
+
+    /**
+     * Filter alerts based on the given types.
+     *
+     * @param  string|array  $types
+     * @return self
+     */
+    public function whereType($types)
+    {
+        $this->registerFilter('type', $types);
+
+        return $this;
+    }
+
+    /**
+     * Filter alerts excluding the given types.
+     *
+     * @param  string|array  $types
+     * @return self
+     */
+    public function whereNotType($types)
+    {
+        $this->registerFilter('type', $types, true);
+
+        return $this;
+    }
+
+    /**
+     * Register the filter(s) on the given zone.
+     *
+     * @param  string  $zone
+     * @param  string|array  $filters
+     * @param  bool  $exclude
+     * @return void
+     */
+    protected function registerFilter($zone, $filters, $exclude = false)
+    {
+        if ( ! is_array($filters)) {
+            $filters = (array) $filters;
         }
 
-        if ( ! is_array($types)) {
-            $types = (array) $types;
-        }
-
-        $messages = $this->filteredAlerts;
+        $alerts = $this->filteredAlerts;
 
         if ( ! $this->filters && ! $this->filteredAlerts) {
-            foreach ($this->notifiers as $notifier) {
-                $messages = array_merge_recursive($messages, $notifier->all());
-            }
+            $alerts = $this->getAllAlerts($alerts);
         }
 
-        $key = $exclude ? 'exclude' : 'include';
+        if ($filters) {
+            $type = $exclude ? 'exclude' : 'include';
 
-        if ($areas) {
-            array_set($this->filters, "{$key}.areas", array_merge(array_get($this->filters, "{$key}.areas", []), $areas));
-        }
+            array_set($this->filters, "{$type}.{$zone}", array_merge(array_get($this->filters, "{$type}.{$zone}", []), $filters));
 
-        if ($types) {
-            array_set($this->filters, "{$key}.types", array_merge(array_get($this->filters, "{$key}.types", []), $types));
-        }
-
-        if ($areas) {
-            if ($exclude) {
-                foreach ($areas as $area) {
-                    $messages = array_filter($messages, function ($message) use ($area) {
-                        return $message->area !== $area;
-                    });
+            $alerts = array_filter($alerts, function ($message) use ($zone, $filters, $exclude) {
+                if ($exclude) {
+                    return ! in_array($message->{$zone}, $filters);
+                } else {
+                    return in_array($message->{$zone}, $filters);
                 }
-            } else {
-                $messages = array_filter($messages, function ($message) use ($areas) {
-                    return in_array($message->area, $areas);
-                });
-            }
+            });
         }
 
-        if ($types) {
-            if ($exclude) {
-                foreach ($types as $type) {
-                    $messages = array_filter($messages, function ($message) use ($type) {
-                        return $message->type !== $type;
-                    });
-                }
-            } else {
-                $messages = array_filter($messages, function ($message) use ($types) {
-                    return in_array($message->type, $types);
-                });
-            }
-        }
-
-        $this->filteredAlerts = $messages;
+        $this->filteredAlerts = $alerts;
     }
+
+    /**
+     * Returns all the alerts.
+     *
+     * @param  array  $alerts
+     * @return array
+     */
+    protected function getAllAlerts(array $alerts = [])
+    {
+        foreach ($this->notifiers as $notifier) {
+            $alerts = array_merge_recursive($alerts, $notifier->get());
+        }
+
+        return $alerts;
+    }
+
 }

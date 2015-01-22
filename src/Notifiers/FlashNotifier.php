@@ -18,7 +18,7 @@
  * @link       http://cartalyst.com
  */
 
-namespace Cartalyst\Alerts;
+namespace Cartalyst\Alerts\Notifiers;
 
 use Cartalyst\Alerts\Storage\StorageInterface;
 
@@ -34,13 +34,14 @@ class FlashNotifier extends Notifier
     /**
      * Constructor.
      *
+     * @param  string  $name
      * @param  array  $config
      * @param  \Cartalyst\Alerts\Storage\StorageInterface  $session
      * @return void
      */
-    public function __construct(array $config = [], StorageInterface $session)
+    public function __construct($name, array $config = [], StorageInterface $session)
     {
-        parent::__construct($config);
+        parent::__construct($name, $config);
 
         $this->session = $session;
     }

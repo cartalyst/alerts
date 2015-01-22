@@ -21,7 +21,6 @@
 namespace Cartalyst\Alerts\Laravel;
 
 use Illuminate\Support\ServiceProvider;
-use Cartalyst\Alerts\Storage\StorageInterface;
 use Cartalyst\Alerts\Storage\IlluminateSession;
 
 class AlertsServiceProvider extends ServiceProvider
@@ -50,6 +49,16 @@ class AlertsServiceProvider extends ServiceProvider
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public function provides()
+    {
+        return [
+            'alerts',
+        ];
+    }
+
+    /**
      * Register alerts.
      *
      * @return void
@@ -59,15 +68,19 @@ class AlertsServiceProvider extends ServiceProvider
         $this->app->bindShared('alerts', function ($app) {
             $config = $this->app['config']['cartalyst/alerts::config'];
 
-            $notifier      = $this->app->make('Cartalyst\Alerts\Notifier', [array_get($config, 'classes')]);
-            $flashNotifier = $this->app->make('Cartalyst\Alerts\FlashNotifier', [array_get($config, 'classes')]);
-
             $alerts = $this->app->make('Cartalyst\Alerts\Alerts');
 
-            $alerts->setDefaultNotifier(array_get($config, 'default'));
+            $classes = array_get($config, 'classes');
 
-            $alerts->addNotifier('flash', $flashNotifier);
-            $alerts->addNotifier('view', $notifier);
+            $alerts->addNotifier(
+                $this->app->make('Cartalyst\Alerts\Notifiers\Notifier', ['view', $classes])
+            );
+
+            $alerts->addNotifier(
+                $this->app->make('Cartalyst\Alerts\Notifiers\FlashNotifier', ['flash', $classes])
+            );
+
+            $alerts->setDefaultNotifier(array_get($config, 'default'));
 
             return $alerts;
         });
@@ -83,15 +96,5 @@ class AlertsServiceProvider extends ServiceProvider
         $this->app['Cartalyst\Alerts\Storage\StorageInterface'] = $this->app->share(function ($app) {
             return new IlluminateSession($app['session.store']);
         });
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function provides()
-    {
-        return [
-            'alerts',
-        ];
     }
 }
