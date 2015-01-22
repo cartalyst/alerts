@@ -66,7 +66,7 @@ class AlertsTest extends PHPUnit_Framework_TestCase
 
         $this->alerts->removeNotifier('view');
 
-        $this->assertSame($message, head($this->alerts->all()->get()));
+        $this->assertSame($message, head($this->alerts->get()));
     }
 
     /** @test */

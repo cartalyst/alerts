@@ -37,6 +37,13 @@ class Alerts
     protected $filteredAlerts = [];
 
     /**
+     * Filters.
+     *
+     * @var array
+     */
+    protected $filters = [];
+
+    /**
      * Adds the given notifier.
      *
      * @param  string  $type
@@ -66,23 +73,18 @@ class Alerts
      */
     public function get()
     {
+        // Retrieve all alerts if no filters are assigned
+        if ( ! $this->filters) {
+            $this->filter();
+        }
+
         $filteredAlerts = $this->filteredAlerts;
 
+        // Clear filters and filtered alerts
+        $this->filters = [];
         $this->filteredAlerts = [];
 
         return $filteredAlerts;
-    }
-
-    /**
-     * Sets all alerts on the filteredAlerts.
-     *
-     * @return self
-     */
-    public function all()
-    {
-        $this->filter();
-
-        return $this;
     }
 
     /**
@@ -197,10 +199,20 @@ class Alerts
 
         $messages = $this->filteredAlerts;
 
-        if ( ! $this->filteredAlerts) {
+        if ( ! $this->filters) {
             foreach ($this->notifiers as $notifier) {
                 $messages = array_merge_recursive($messages, $notifier->all());
             }
+        }
+
+        $key = $exclude ? 'exclude' : 'include';
+
+        if ($areas) {
+            array_set($this->filters, "{$key}.areas", array_merge(array_get($this->filters, "{$key}.areas", []), $areas));
+        }
+
+        if ($types) {
+            array_set($this->filters, "{$key}.types", array_merge(array_get($this->filters, "{$key}.types", []), $types));
         }
 
         if ($areas) {
