@@ -215,6 +215,6 @@ class AlertsTest extends PHPUnit_Framework_TestCase
 
         $this->alerts->addNotifier('view', $notifier);
 
-        $this->assertSame($notifier, $this->alerts->view());
+        $this->assertSame($notifier, $this->alerts->notifier('view'));
     }
 }
