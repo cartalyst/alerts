@@ -113,11 +113,16 @@ class Alerts
         return array_get($this->notifiers, $name, $default);
     }
 
+    /**
+     * Returns the alerts with the applied filters.
+     *
+     * @return array
+     */
     public function get()
     {
         // Retrieve all alerts if no filters are assigned
         if ( ! $this->filters) {
-            $this->registerFilter(null, null, null);
+            return $this->getAllAlerts();
         }
 
         $filteredAlerts = $this->filteredAlerts;
@@ -196,18 +201,24 @@ class Alerts
         return $this;
     }
 
+    /**
+     * Register the filter(s) on the given zone.
+     *
+     * @param  string  $zone
+     * @param  string|array  $filters
+     * @param  bool  $exclude
+     * @return void
+     */
     protected function registerFilter($zone, $filters, $exclude = false)
     {
         if ( ! is_array($filters)) {
             $filters = (array) $filters;
         }
 
-        $messages = $this->filteredAlerts;
+        $alerts = $this->filteredAlerts;
 
-        if ( ! $this->filters) {
-            foreach ($this->notifiers as $notifier) {
-                $messages = array_merge_recursive($messages, $notifier->all());
-            }
+        if ( ! $this->filters && ! $this->filteredAlerts) {
+            $alerts = $this->getAllAlerts($alerts);
         }
 
         if ($filters) {
@@ -215,7 +226,7 @@ class Alerts
 
             array_set($this->filters, "{$type}.{$zone}", array_merge(array_get($this->filters, "{$type}.{$zone}", []), $filters));
 
-            $messages = array_filter($messages, function ($message) use ($zone, $filters, $exclude) {
+            $alerts = array_filter($alerts, function ($message) use ($zone, $filters, $exclude) {
                 if ($exclude) {
                     return ! in_array($message->{$zone}, $filters);
                 } else {
@@ -224,7 +235,22 @@ class Alerts
             });
         }
 
-        $this->filteredAlerts = $messages;
+        $this->filteredAlerts = $alerts;
+    }
+
+    /**
+     * Returns all the alerts.
+     *
+     * @param  array  $alerts
+     * @return array
+     */
+    protected function getAllAlerts(array $alerts = [])
+    {
+        foreach ($this->notifiers as $notifier) {
+            $alerts = array_merge_recursive($alerts, $notifier->all());
+        }
+
+        return $alerts;
     }
 
 }
