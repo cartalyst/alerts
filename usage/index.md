@@ -74,7 +74,10 @@ Using `except` you can retrieve all alerts, except a specific type. This comes i
 
 ```php
 // All except `form` alerts.
-$alerts = Alert::except('fom');
+$alerts = Alert::except('form');
+
+// All except `form, notice` alerts.
+$alerts = Alert::except(['form', 'notice']);
 ```
 
 ### Generating the alerts view
