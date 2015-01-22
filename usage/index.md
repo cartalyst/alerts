@@ -177,7 +177,7 @@ $alerts = Alert::get();
 
 Alert classes can be useful when it comes to adding classes to HTML elements, let's take an `error` alert as an example.
 
-The `class` property on every alert defaults to the error type, in our case `error`.
+The `class` property on every alert defaults to the alert type, in our case `error`.
 
 ##### Alert
 
