@@ -62,7 +62,7 @@ class AlertsServiceProvider extends ServiceProvider
             $notifier      = $this->app->make('Cartalyst\Alerts\Notifier', [array_get($config, 'classes')]);
             $flashNotifier = $this->app->make('Cartalyst\Alerts\FlashNotifier', [array_get($config, 'classes')]);
 
-            $alerts = $this->app->make('Cartalyst\Alerts\Alerts', array_get($config, 'default'));
+            $alerts = $this->app->make('Cartalyst\Alerts\Alerts', [array_get($config, 'default')]);
 
             $alerts->addNotifier('flash', $flashNotifier);
             $alerts->addNotifier('view', $notifier);
