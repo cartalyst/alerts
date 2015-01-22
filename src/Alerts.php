@@ -143,6 +143,10 @@ class Alerts
      */
     public function __call($method, array $parameters = [])
     {
+        if ($notifier = array_get($this->notifiers, $method)) {
+            return $notifier;
+        }
+
         return call_user_func_array(
             [ $this->notifiers[$this->defaultNotifier], '__call' ],
             [ $method, $parameters ]

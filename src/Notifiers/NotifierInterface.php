@@ -46,5 +46,5 @@ interface NotifierInterface
      *
      * @return array
      */
-    public function all();
+    public function get();
 }

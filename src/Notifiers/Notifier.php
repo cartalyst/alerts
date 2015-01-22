@@ -93,7 +93,7 @@ class Notifier implements NotifierInterface
     /**
      * {@inheritDoc}
      */
-    public function all()
+    public function get()
     {
         return $this->alerts;
     }
