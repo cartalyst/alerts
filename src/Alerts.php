@@ -115,7 +115,18 @@ class Alerts
 
     public function get()
     {
+       // Retrieve all alerts if no filters are assigned
+        if ( ! $this->filters) {
+            $this->registerFilter(null, null, null);
+        }
 
+        $filteredAlerts = $this->filteredAlerts;
+
+        // Clear filters and filtered alerts
+        $this->filters = [];
+        $this->filteredAlerts = [];
+
+        return $filteredAlerts;
     }
 
     /**
@@ -184,7 +195,6 @@ class Alerts
 
         return $this;
     }
-
 
     protected function registerFilter($zone, $filters, $exclude = false)
     {
