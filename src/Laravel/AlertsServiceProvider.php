@@ -21,7 +21,6 @@
 namespace Cartalyst\Alerts\Laravel;
 
 use Illuminate\Support\ServiceProvider;
-use Cartalyst\Alerts\Storage\StorageInterface;
 use Cartalyst\Alerts\Storage\IlluminateSession;
 
 class AlertsServiceProvider extends ServiceProvider
@@ -47,6 +46,16 @@ class AlertsServiceProvider extends ServiceProvider
         $this->registerSession();
 
         $this->registerAlerts();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function provides()
+    {
+        return [
+            'alerts',
+        ];
     }
 
     /**
@@ -87,15 +96,5 @@ class AlertsServiceProvider extends ServiceProvider
         $this->app['Cartalyst\Alerts\Storage\StorageInterface'] = $this->app->share(function ($app) {
             return new IlluminateSession($app['session.store']);
         });
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function provides()
-    {
-        return [
-            'alerts',
-        ];
     }
 }

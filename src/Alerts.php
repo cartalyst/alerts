@@ -115,7 +115,7 @@ class Alerts
 
     public function get()
     {
-       // Retrieve all alerts if no filters are assigned
+        // Retrieve all alerts if no filters are assigned
         if ( ! $this->filters) {
             $this->registerFilter(null, null, null);
         }
@@ -210,24 +210,18 @@ class Alerts
             }
         }
 
-        $key = $exclude ? 'exclude' : 'include';
-
         if ($filters) {
-            array_set($this->filters, "{$key}.{$zone}", array_merge(array_get($this->filters, "{$key}.{$zone}", []), $filters));
-        }
+            $type = $exclude ? 'exclude' : 'include';
 
-        if ($filters) {
-            if ($exclude) {
-                foreach ($filters as $filter) {
-                    $messages = array_filter($messages, function ($message) use ($zone, $filter) {
-                        return $message->{$zone} !== $filter;
-                    });
-                }
-            } else {
-                $messages = array_filter($messages, function ($message) use ($zone, $filters) {
+            array_set($this->filters, "{$type}.{$zone}", array_merge(array_get($this->filters, "{$type}.{$zone}", []), $filters));
+
+            $messages = array_filter($messages, function ($message) use ($zone, $filters, $exclude) {
+                if ($exclude) {
+                    return ! in_array($message->{$zone}, $filters);
+                } else {
                     return in_array($message->{$zone}, $filters);
-                });
-            }
+                }
+            });
         }
 
         $this->filteredAlerts = $messages;
