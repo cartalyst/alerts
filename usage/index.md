@@ -30,6 +30,34 @@ Notifiers are responsible for storing the alerts across your application.
 
 Alerts ships with two notifiers.
 
+#### Default
+
+The default notifier is used without having to call an additional method that returns the desired notifier.
+
+- Laravel
+
+The default notifier is set to `flash`.
+
+- Native
+
+The default notifier can be set using `Alert::setDefaultNotifier($notifier)`
+
+#### Retrieve a notifier
+
+Sending alerts using a different notifier requires retrieving the notifier first.
+
+##### Usage
+
+Assuming we have a `view` notifier we can the following.
+
+```php
+// Call the notifier `key` on the facade to retrieve the notifier.
+Alert::view()->error('foo');
+
+// Call the `notifier` method and pass in the notifier key.
+Alert::notifier('view')->error('foo');
+```
+
 #### Flash Notifier (notifies on redirections)
 
 The flash notifier requires `illuminate/session` and `illuminate/filesystem` in order to add flashing notifications capability.
@@ -56,28 +84,77 @@ Alert::view()->error('Error message');
 
 ### Retrieving alerts
 
-#### Alert::all($type)
+The methods below will apply the desired filters to the list of alerts, afterwards, `get` can be called in order to retrieve the alerts.
 
-You can retrieve all alerts, or a specific type of alerts by passing in the type to the `all` method.
+The methods below can be chained to filter down alerts more than once.
+
+```php
+Alert::whereType('foo')->whereArea('bar')->get();
+```
+
+#### `Alert::whereType($type|$types)`
+
+This method will filter down alerts based on the given type(s).
+
+##### Usage
+
+```php
+// Returns all alerts of type `foo`
+Alert::whereType('foo')->get();
+
+// Returns all alerts of type `foo` and `bar`
+Alert::whereType([ 'foo', 'bar' ])->get();
+```
+
+#### `Alert::whereArea($area|$areas)`
+
+This method will filter down alerts based on the given area(s).
+
+##### Usage
+
+```php
+// Returns all alerts of area `foo`
+Alert::whereArea('foo')->get();
+
+// Returns all alerts of area `foo` and `bar`
+Alert::whereArea([ 'foo', 'bar' ])->get();
+```
+
+#### `Alert::whereNotType($type|$types)`
+
+This method will filter down alerts excluding the given type(s).
+
+##### Usage
+
+```php
+// Returns all alerts excluding type `foo`
+Alert::whereNotType('foo')->get();
+
+// Returns all alerts excluding type `foo` and `bar`
+Alert::whereNotType([ 'foo', 'bar' ])->get();
+```
+
+#### `Alert::whereNotArea($type|$types)`
+
+This method will filter down alerts excluding the given area(s).
+
+##### Usage
+
+```php
+// Returns all alerts excluding area `foo`
+Alert::whereNotArea('foo')->get();
+
+// Returns all alerts excluding area `foo` and `bar`
+Alert::whereNotArea([ 'foo', 'bar' ])->get();
+```
+
+#### Alert::get()
+
+You can retrieve all or the filtered list of alerts using the `get` method.
 
 ```php
 // All alerts
-$alerts = Alert::all();
-
-// Alerts of the type `foo`
-$alerts = Alert::all('foo');
-```
-
-#### Alert::except($type)
-
-Using `except` you can retrieve all alerts, except a specific type. This comes in handy when you have a `form` type that you want to exclude from your general alerts view.
-
-```php
-// All except `form` alerts.
-$alerts = Alert::except('form');
-
-// All except `form, notice` alerts.
-$alerts = Alert::except(['form', 'notice']);
+$alerts = Alert::get();
 ```
 
 ### Generating the alerts view
