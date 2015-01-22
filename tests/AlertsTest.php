@@ -48,7 +48,9 @@ class AlertsTest extends PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        $this->alerts = new Alerts('flash');
+        $this->alerts = new Alerts();
+
+        $this->alerts->setDefaultNotifier('flash');
     }
 
     /** @test */

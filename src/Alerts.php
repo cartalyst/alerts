@@ -51,17 +51,6 @@ class Alerts
     protected $filters = [];
 
     /**
-     * Constructor.
-     *
-     * @param  string  $default
-     * @return void
-     */
-    public function __construct($default)
-    {
-        $this->default = $default;
-    }
-
-    /**
      * Adds the given notifier.
      *
      * @param  string  $type
@@ -183,6 +172,27 @@ class Alerts
     public function notifier($notifier)
     {
         return array_get($this->notifiers, $notifier, array_get($this->notifiers, $this->default));
+    }
+
+    /**
+     * Sets the default notifier.
+     *
+     * @param  string  $notifier
+     * @return void
+     */
+    public function setDefaultNotifier($notifier)
+    {
+        $this->default = $notifier;
+    }
+
+    /**
+     * Returns the default notifier key.
+     *
+     * @return string
+     */
+    public function getDefaultNotifier()
+    {
+        return $this->default;
     }
 
     /**
