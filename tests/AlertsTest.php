@@ -48,7 +48,7 @@ class AlertsTest extends PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        $this->alerts = new Alerts();
+        $this->alerts = new Alerts('flash');
     }
 
     /** @test */
@@ -61,7 +61,7 @@ class AlertsTest extends PHPUnit_Framework_TestCase
 
         $notifier2 = m::mock('Cartalyst\Alerts\NotifierInterface');
 
-        $this->alerts->addNotifier('default', $notifier1);
+        $this->alerts->addNotifier('flash', $notifier1);
         $this->alerts->addNotifier('view', $notifier2);
 
         $this->alerts->removeNotifier('view');
@@ -77,7 +77,7 @@ class AlertsTest extends PHPUnit_Framework_TestCase
             ->once()
             ->andReturn([$message = new Message('foo', 'error', 'default')]);
 
-        $this->alerts->addNotifier('default', $notifier);
+        $this->alerts->addNotifier('flash', $notifier);
 
         $this->assertEmpty($this->alerts->whereNotArea('default')->get());
     }
@@ -94,7 +94,7 @@ class AlertsTest extends PHPUnit_Framework_TestCase
         $notifier->shouldReceive('all')
             ->andReturn($alerts);
 
-        $this->alerts->addNotifier('default', $notifier);
+        $this->alerts->addNotifier('flash', $notifier);
 
         $this->assertEquals($alerts[0], head($this->alerts->whereArea('header')->get()));
         $this->assertEquals($alerts[1], head($this->alerts->whereArea('footer')->get()));
@@ -113,7 +113,7 @@ class AlertsTest extends PHPUnit_Framework_TestCase
             ->once()
             ->andReturn($alerts);
 
-        $this->alerts->addNotifier('default', $notifier);
+        $this->alerts->addNotifier('flash', $notifier);
 
         $this->assertSame($alerts, $this->alerts->whereType(['error', 'warning'])->get());
     }
@@ -137,7 +137,7 @@ class AlertsTest extends PHPUnit_Framework_TestCase
         $notifier->shouldReceive('all')
             ->andReturn($alerts);
 
-        $this->alerts->addNotifier('default', $notifier);
+        $this->alerts->addNotifier('flash', $notifier);
 
         // Header alerts
         $this->assertEquals($headerAlerts, array_values($this->alerts->whereArea('header')->get()));
@@ -175,7 +175,7 @@ class AlertsTest extends PHPUnit_Framework_TestCase
         $notifier->shouldReceive('all')
             ->andReturn($alerts);
 
-        $this->alerts->addNotifier('default', $notifier);
+        $this->alerts->addNotifier('flash', $notifier);
 
         $this->assertEquals($footerAlerts, array_values($this->alerts->whereNotArea('header')->get()));
 
@@ -197,7 +197,7 @@ class AlertsTest extends PHPUnit_Framework_TestCase
     {
         $notifier = new Notifier();
 
-        $this->alerts->addNotifier('default', $notifier);
+        $this->alerts->addNotifier('flash', $notifier);
 
         $messageBag = new MessageBag(['foo' => 'bar']);
 

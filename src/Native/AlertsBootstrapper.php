@@ -44,7 +44,7 @@ class AlertsBootstrapper
      */
     public function createAlerts()
     {
-        $alerts = new Alerts();
+        $alerts = new Alerts(array_get($config, 'default'));
 
         $this->createNotifier($alerts);
         $this->createFlashNotifier($alerts);

@@ -57,14 +57,14 @@ class AlertsServiceProvider extends ServiceProvider
     protected function registerAlerts()
     {
         $this->app->bindShared('alerts', function ($app) {
-            $config = $this->app['config']['cartalyst/alerts::config.classes'];
+            $config = $this->app['config']['cartalyst/alerts::config'];
 
-            $notifier      = $this->app->make('Cartalyst\Alerts\Notifier', [$config]);
-            $flashNotifier = $this->app->make('Cartalyst\Alerts\FlashNotifier', [$config]);
+            $notifier      = $this->app->make('Cartalyst\Alerts\Notifier', [array_get($config, 'classes')]);
+            $flashNotifier = $this->app->make('Cartalyst\Alerts\FlashNotifier', [array_get($config, 'classes')]);
 
-            $alerts = $this->app->make('Cartalyst\Alerts\Alerts');
+            $alerts = $this->app->make('Cartalyst\Alerts\Alerts', array_get($config, 'default'));
 
-            $alerts->addNotifier('default', $flashNotifier);
+            $alerts->addNotifier('flash', $flashNotifier);
             $alerts->addNotifier('view', $notifier);
 
             return $alerts;

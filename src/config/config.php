@@ -22,6 +22,22 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Default Notifier
+    |--------------------------------------------------------------------------
+    |
+    | The default notifier will be used out of the box without having to call
+    | an additional method to determine which notifier is the default.
+    |
+    | 'default' => 'flash'
+    |
+    | Alerts ships with two notifiers, `flash`, `view`
+    |
+    */
+
+    'default' => 'flash',
+
+    /*
+    |--------------------------------------------------------------------------
     | Classes
     |--------------------------------------------------------------------------
     |

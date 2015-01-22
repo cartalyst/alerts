@@ -23,6 +23,13 @@ namespace Cartalyst\Alerts;
 class Alerts
 {
     /**
+     * Filters.
+     *
+     * @var array
+     */
+    protected $default;
+
+    /**
      * Notifiers.
      *
      * @var array
@@ -42,6 +49,17 @@ class Alerts
      * @var array
      */
     protected $filters = [];
+
+    /**
+     * Constructor.
+     *
+     * @param  string  $default
+     * @return void
+     */
+    public function __construct($default)
+    {
+        $this->default = $default;
+    }
 
     /**
      * Adds the given notifier.
@@ -176,7 +194,7 @@ class Alerts
      */
     public function __call($method, $parameters)
     {
-        return call_user_func_array([$this->notifiers['default'], '__call'], [$method, $parameters]);
+        return call_user_func_array([$this->notifiers[$this->default], '__call'], [$method, $parameters]);
     }
 
     /**
