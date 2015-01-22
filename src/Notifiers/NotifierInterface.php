@@ -18,12 +18,17 @@
  * @link       http://cartalyst.com
  */
 
-namespace Cartalyst\Alerts;
-
-use Cartalyst\Alerts\View\Factory;
+namespace Cartalyst\Alerts\Notifiers;
 
 interface NotifierInterface
 {
+    /**
+     * Returns the notifier name.
+     *
+     * @return string
+     */
+    public function getName();
+
     /**
      * Flashes alerts.
      *

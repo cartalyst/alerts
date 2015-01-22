@@ -18,12 +18,20 @@
  * @link       http://cartalyst.com
  */
 
-namespace Cartalyst\Alerts;
+namespace Cartalyst\Alerts\Notifiers;
 
+use Cartalyst\Alerts\Message;
 use Illuminate\Support\MessageBag;
 
 class Notifier implements NotifierInterface
 {
+    /**
+     * The notifier name.
+     *
+     * @var string
+     */
+    protected $name;
+
     /**
      * Configuration array.
      *
@@ -41,12 +49,23 @@ class Notifier implements NotifierInterface
     /**
      * Constructor.
      *
+     * @param  string  $name
      * @param  array  $config
      * @return void
      */
-    public function __construct(array $config = [])
+    public function __construct($name, array $config = [])
     {
+        $this->name = $name;
+
         $this->config = $config;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 
     /**
