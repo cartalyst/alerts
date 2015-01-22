@@ -251,7 +251,7 @@ class Alerts
     protected function getAllAlerts(array $alerts = [])
     {
         foreach ($this->notifiers as $notifier) {
-            $alerts = array_merge_recursive($alerts, $notifier->all());
+            $alerts = array_merge_recursive($alerts, $notifier->get());
         }
 
         return $alerts;
