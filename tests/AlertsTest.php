@@ -66,7 +66,7 @@ class AlertsTest extends PHPUnit_Framework_TestCase
 
         $this->alerts->removeNotifier('view');
 
-        $this->assertSame($message, head($this->alerts->all()));
+        $this->assertSame($message, head($this->alerts->get()));
     }
 
     /** @test */
@@ -96,8 +96,8 @@ class AlertsTest extends PHPUnit_Framework_TestCase
 
         $this->alerts->addNotifier('default', $notifier);
 
-        $this->assertEquals($alerts[0], head($this->alerts->all('header')));
-        $this->assertEquals($alerts[1], head($this->alerts->all('footer')));
+        $this->assertEquals($alerts[0], head($this->alerts->whereArea('header')));
+        $this->assertEquals($alerts[1], head($this->alerts->whereArea('footer')));
     }
 
     /** @test */
@@ -115,7 +115,7 @@ class AlertsTest extends PHPUnit_Framework_TestCase
 
         $this->alerts->addNotifier('default', $notifier);
 
-        $this->assertSame($alerts, $this->alerts->all(null, ['error', 'warning']));
+        $this->assertSame($alerts, $this->alerts->whereType(['error', 'warning']));
     }
 
     /** @test */
@@ -140,20 +140,20 @@ class AlertsTest extends PHPUnit_Framework_TestCase
         $this->alerts->addNotifier('default', $notifier);
 
         // Header alerts
-        $this->assertEquals($headerAlerts, array_values($this->alerts->all('header')));
+        $this->assertEquals($headerAlerts, array_values($this->alerts->whereArea('header')));
 
-        $this->assertEquals($headerAlerts[0], head($this->alerts->all('header', ['error'])));
-        $this->assertEquals($headerAlerts[1], head($this->alerts->all('header', ['warning'])));
+        $this->assertEquals($headerAlerts[0], head($this->alerts->get('header', ['error'])));
+        $this->assertEquals($headerAlerts[1], head($this->alerts->get('header', ['warning'])));
 
-        $this->assertEquals([$headerAlerts[0], $footerAlerts[0]], array_values($this->alerts->all(null, 'error')));
+        $this->assertEquals([$headerAlerts[0], $footerAlerts[0]], array_values($this->alerts->whereType('error')));
 
         // Footer alerts
-        $this->assertEquals($footerAlerts, array_values($this->alerts->all('footer')));
+        $this->assertEquals($footerAlerts, array_values($this->alerts->whereArea('footer')));
 
-        $this->assertEquals($footerAlerts[0], head($this->alerts->all('footer', ['error'])));
-        $this->assertEquals($footerAlerts[1], head($this->alerts->all('footer', ['warning'])));
+        $this->assertEquals($footerAlerts[0], head($this->alerts->get('footer', ['error'])));
+        $this->assertEquals($footerAlerts[1], head($this->alerts->get('footer', ['warning'])));
 
-        $this->assertEquals([$headerAlerts[1], $footerAlerts[1]], array_values($this->alerts->all(null, 'warning')));
+        $this->assertEquals([$headerAlerts[1], $footerAlerts[1]], array_values($this->alerts->whereType('warning')));
     }
 
     /** @test */

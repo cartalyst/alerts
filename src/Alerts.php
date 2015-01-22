@@ -58,9 +58,31 @@ class Alerts
      * @param  array|string  $areas
      * @return array
      */
-    public function all($areas = null, $types = null)
+    public function get($areas = null, $types = null)
     {
         return $this->filter($areas, $types);
+    }
+
+    /**
+     * Filters alerts based on the given areas.
+     *
+     * @param  string|array  $areas
+     * @return array
+     */
+    public function whereArea($areas)
+    {
+        return $this->filter($areas);
+    }
+
+    /**
+     * Filters alerts based on the given types.
+     *
+     * @param  string|array  $types
+     * @return array
+     */
+    public function whereType($types)
+    {
+        return $this->filter(null, $types);
     }
 
     /**
@@ -84,7 +106,7 @@ class Alerts
      */
     public function form($key, $alert = null)
     {
-        $messages = $this->all('form') ?: [];
+        $messages = $this->whereArea('form') ?: [];
 
         foreach ($messages as $message) {
             if ($message->getKey() === $key) {
