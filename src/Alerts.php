@@ -66,28 +66,13 @@ class Alerts
     /**
      * Returns all except the given types of alerts.
      *
+     * @param  array|string  $areas
      * @param  array|string  $types
      * @return array
      */
-    public function except($types)
+    public function except($areas, $types = [])
     {
-        if ( ! is_array($types)) {
-            $types = (array) $types;
-        }
-
-        $messages = [];
-
-        foreach ($this->notifiers as $notifier) {
-            $messages = array_merge_recursive($messages, $notifier->all());
-        }
-
-        foreach ($types as $type) {
-            $messages = array_filter($messages, function ($message) use ($type) {
-                return $message->area !== $type;
-            });
-        }
-
-        return $messages;
+        return $this->filter($areas, $types, true);
     }
 
     /**
@@ -135,9 +120,10 @@ class Alerts
      *
      * @param  array|string  $areas
      * @param  array|string  $types
+     * @param  bool  $exclude
      * @return array
      */
-    protected function filter($areas = null, $types = null)
+    protected function filter($areas = null, $types = null, $exclude = false)
     {
         if ( ! is_array($areas)) {
             $areas = (array) $areas;
@@ -154,15 +140,31 @@ class Alerts
         }
 
         if ($areas) {
-            $messages = array_filter($messages, function ($message) use ($areas) {
-                return in_array($message->area, $areas);
-            });
+            if ($exclude) {
+                foreach ($areas as $area) {
+                    $messages = array_filter($messages, function ($message) use ($area) {
+                        return $message->area !== $area;
+                    });
+                }
+            } else {
+                $messages = array_filter($messages, function ($message) use ($areas) {
+                    return in_array($message->area, $areas);
+                });
+            }
         }
 
         if ($types) {
-            $messages = array_filter($messages, function ($message) use ($types) {
-                return in_array($message->type, $types);
-            });
+            if ($exclude) {
+                foreach ($types as $type) {
+                    $messages = array_filter($messages, function ($message) use ($type) {
+                        return $message->type !== $type;
+                    });
+                }
+            } else {
+                $messages = array_filter($messages, function ($message) use ($types) {
+                    return in_array($message->type, $types);
+                });
+            }
         }
 
         return $messages;
