@@ -72,6 +72,12 @@ class AlertsTest extends PHPUnit_Framework_TestCase
     }
 
     /** @test */
+    public function it_can_retrieve_the_default_notifier_key()
+    {
+        $this->assertEquals('flash', $this->alerts->getDefaultNotifier());
+    }
+
+    /** @test */
     public function it_can_retrieve_all_alerts_except_a_specific_type()
     {
         $notifier = m::mock('Cartalyst\Alerts\NotifierInterface');
@@ -211,12 +217,13 @@ class AlertsTest extends PHPUnit_Framework_TestCase
     }
 
     /** @test */
-    public function it_can_retrieve_the_view_notifier()
+    public function it_can_retrieve_notifier()
     {
         $notifier = m::mock('Cartalyst\Alerts\NotifierInterface');
 
-        $this->alerts->addNotifier('view', $notifier);
+        $this->alerts->addNotifier('foo', $notifier);
 
-        $this->assertSame($notifier, $this->alerts->notifier('view'));
+        $this->assertSame($notifier, $this->alerts->notifier('foo'));
+        $this->assertSame($notifier, $this->alerts->foo());
     }
 }
