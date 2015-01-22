@@ -53,26 +53,14 @@ class Alerts
     }
 
     /**
-     * Returns all or a sepcific type of alerts.
+     * Returns all or the given areas of alerts.
      *
-     * @param  string  $type
+     * @param  array|string  $areas
      * @return array
      */
-    public function all($type = null)
+    public function all($areas = null, $types = null)
     {
-        $messages = [];
-
-        foreach ($this->notifiers as $notifier) {
-            $messages = array_merge_recursive($messages, $notifier->all());
-        }
-
-        if ($type) {
-            $messages = array_filter($messages, function ($message) use ($type) {
-                return $message->area === $type;
-            });
-        }
-
-        return $messages;
+        return $this->filter($areas, $types);
     }
 
     /**
@@ -140,5 +128,43 @@ class Alerts
     public function __call($method, $parameters)
     {
         return call_user_func_array([$this->notifiers['default'], '__call'], [$method, $parameters]);
+    }
+
+    /**
+     * Returns all or the given filtered alerts.
+     *
+     * @param  array|string  $areas
+     * @param  array|string  $types
+     * @return array
+     */
+    protected function filter($areas = null, $types = null)
+    {
+        if ( ! is_array($areas)) {
+            $areas = (array) $areas;
+        }
+
+        if ( ! is_array($types)) {
+            $types = (array) $types;
+        }
+
+        $messages = [];
+
+        foreach ($this->notifiers as $notifier) {
+            $messages = array_merge_recursive($messages, $notifier->all());
+        }
+
+        if ($areas) {
+            $messages = array_filter($messages, function ($message) use ($areas) {
+                return in_array($message->area, $areas);
+            });
+        }
+
+        if ($types) {
+            $messages = array_filter($messages, function ($message) use ($types) {
+                return in_array($message->type, $types);
+            });
+        }
+
+        return $messages;
     }
 }

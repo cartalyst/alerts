@@ -83,6 +83,80 @@ class AlertsTest extends PHPUnit_Framework_TestCase
     }
 
     /** @test */
+    public function it_can_retrieve_all_alerts_of_areas()
+    {
+        $alerts = [
+            new Message('foo', 'error', 'header'),
+            new Message('foo', 'warning', 'footer'),
+        ];
+
+        $notifier = m::mock('Cartalyst\Alerts\NotifierInterface');
+        $notifier->shouldReceive('all')
+            ->andReturn($alerts);
+
+        $this->alerts->addNotifier('default', $notifier);
+
+        $this->assertEquals($alerts[0], head($this->alerts->all('header')));
+        $this->assertEquals($alerts[1], head($this->alerts->all('footer')));
+    }
+
+    /** @test */
+    public function it_can_retrieve_all_alerts_of_types()
+    {
+        $alerts = [
+            new Message('foo', 'error', 'default'),
+            new Message('foo', 'warning', 'default'),
+        ];
+
+        $notifier = m::mock('Cartalyst\Alerts\NotifierInterface');
+        $notifier->shouldReceive('all')
+            ->once()
+            ->andReturn($alerts);
+
+        $this->alerts->addNotifier('default', $notifier);
+
+        $this->assertSame($alerts, $this->alerts->all(null, ['error', 'warning']));
+    }
+
+    /** @test */
+    public function it_can_retrieve_alerts_of_areas_and_types()
+    {
+        $headerAlerts = [
+            new Message('header error', 'error', 'header'),
+            new Message('header warning', 'warning', 'header'),
+        ];
+
+        $footerAlerts = [
+            new Message('footer error', 'error', 'footer'),
+            new Message('footer warning', 'warning', 'footer'),
+        ];
+
+        $alerts = array_merge($headerAlerts, $footerAlerts);
+
+        $notifier = m::mock('Cartalyst\Alerts\NotifierInterface');
+        $notifier->shouldReceive('all')
+            ->andReturn($alerts);
+
+        $this->alerts->addNotifier('default', $notifier);
+
+        // Header alerts
+        $this->assertEquals($headerAlerts, array_values($this->alerts->all('header')));
+
+        $this->assertEquals($headerAlerts[0], head($this->alerts->all('header', ['error'])));
+        $this->assertEquals($headerAlerts[1], head($this->alerts->all('header', ['warning'])));
+
+        $this->assertEquals([$headerAlerts[0], $footerAlerts[0]], array_values($this->alerts->all(null, 'error')));
+
+        // Footer alerts
+        $this->assertEquals($footerAlerts, array_values($this->alerts->all('footer')));
+
+        $this->assertEquals($footerAlerts[0], head($this->alerts->all('footer', ['error'])));
+        $this->assertEquals($footerAlerts[1], head($this->alerts->all('footer', ['warning'])));
+
+        $this->assertEquals([$headerAlerts[1], $footerAlerts[1]], array_values($this->alerts->all(null, 'warning')));
+    }
+
+    /** @test */
     public function it_can_retrieve_form_element_errors()
     {
         $notifier = new Notifier();
