@@ -32,6 +32,13 @@ class Notifier implements NotifierInterface
     protected $config = [];
 
     /**
+     * Alerts.
+     *
+     * @var array
+     */
+    protected $alerts = [];
+
+    /**
      * Constructor.
      *
      * @param  array  $config
@@ -41,13 +48,6 @@ class Notifier implements NotifierInterface
     {
         $this->config = $config;
     }
-
-    /**
-     * Alerts.
-     *
-     * @var array
-     */
-    protected $alerts = [];
 
     /**
      * {@inheritDoc}
@@ -80,17 +80,6 @@ class Notifier implements NotifierInterface
     }
 
     /**
-     * Removes the given type from messages.
-     *
-     * @param  string  $type
-     * @return void
-     */
-    protected function remove($type)
-    {
-        unset($this->alerts[$type]);
-    }
-
-    /**
      * Dynamically passes alerts to the view.
      *
      * @param  string  $method
@@ -104,6 +93,17 @@ class Notifier implements NotifierInterface
         $class = array_get($this->config, $method, $method);
 
         return $this->alert($message, $method, $area, false, $class);
+    }
+
+    /**
+     * Removes the given type from messages.
+     *
+     * @param  string  $type
+     * @return void
+     */
+    protected function remove($type)
+    {
+        unset($this->alerts[$type]);
     }
 
     /**
