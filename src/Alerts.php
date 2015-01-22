@@ -231,7 +231,7 @@ class Alerts
 
         $messages = $this->filteredAlerts;
 
-        if ( ! $this->filters) {
+        if ( ! $this->filters && ! $this->filteredAlerts) {
             foreach ($this->notifiers as $notifier) {
                 $messages = array_merge_recursive($messages, $notifier->all());
             }
