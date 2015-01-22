@@ -56,7 +56,7 @@ class Notifier implements NotifierInterface
     {
         $this->remove($type);
 
-        if (! is_array($messages)) {
+        if ( ! is_array($messages)) {
             $messages = [$messages];
         }
 

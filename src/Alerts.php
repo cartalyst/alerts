@@ -83,7 +83,7 @@ class Alerts
      */
     public function except($types)
     {
-        if (! is_array($types)) {
+        if ( ! is_array($types)) {
             $types = (array) $types;
         }
 
