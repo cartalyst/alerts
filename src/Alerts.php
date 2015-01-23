@@ -147,14 +147,14 @@ class Alerts
             return $notifier;
         }
 
-        if (strpos($method, 'on') !== false) {
+        if (starts_with($method, 'on') !== false) {
             $area = strtolower(substr($method, 2));
 
             $messages = $this->whereArea($area)->get();
 
             foreach ($messages as $message) {
-                if ($message->getKey() === $key) {
-                    return $alert ?: $message->message;
+                if ($message->getKey() === $parameters[0]) {
+                    return isset($parameters[1]) ? $parameters[1] : $message->message;
                 }
             }
 
