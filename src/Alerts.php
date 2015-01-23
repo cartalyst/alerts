@@ -147,6 +147,20 @@ class Alerts
             return $notifier;
         }
 
+        if (strpos($method, 'on') !== false) {
+            $area = strtolower(substr($method, 2));
+
+            $messages = $this->whereArea($area)->get();
+
+            foreach ($messages as $message) {
+                if ($message->getKey() === $key) {
+                    return $alert ?: $message->message;
+                }
+            }
+
+            return null;
+        }
+
         return call_user_func_array(
             [ $this->notifiers[$this->defaultNotifier], '__call' ],
             [ $method, $parameters ]
