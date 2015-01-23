@@ -141,7 +141,7 @@ class Alerts
      * @param  array  $parameters
      * @return mixed
      */
-    public function __call($method, array $parameters = [])
+    public function __call($method, $parameters)
     {
         if ($notifier = array_get($this->notifiers, $method)) {
             return $notifier;
