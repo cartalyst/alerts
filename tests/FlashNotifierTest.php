@@ -22,7 +22,7 @@ namespace Cartalyst\Alerts\Tests;
 
 use Mockery as m;
 use PHPUnit_Framework_TestCase;
-use Cartalyst\Alerts\FlashNotifier;
+use Cartalyst\Alerts\Notifiers\FlashNotifier;
 
 class FlashNotifierTest extends PHPUnit_Framework_TestCase
 {
@@ -47,7 +47,7 @@ class FlashNotifierTest extends PHPUnit_Framework_TestCase
 
         $this->session = m::mock('Cartalyst\Alerts\Storage\IlluminateSession');
 
-        $this->notifier = new FlashNotifier([], $this->session);
+        $this->notifier = new FlashNotifier('flash', [], $this->session);
     }
 
     /** @test */

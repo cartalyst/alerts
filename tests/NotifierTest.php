@@ -21,7 +21,7 @@
 namespace Cartalyst\Alerts\Tests;
 
 use Cartalyst\Alerts\Message;
-use Cartalyst\Alerts\Notifier;
+use Cartalyst\Alerts\Notifiers\Notifier;
 use PHPUnit_Framework_TestCase;
 
 class NotifierTest extends PHPUnit_Framework_TestCase
@@ -35,7 +35,7 @@ class NotifierTest extends PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        $this->notifier = new Notifier();
+        $this->notifier = new Notifier('flash');
     }
 
     /** @test */
@@ -49,6 +49,6 @@ class NotifierTest extends PHPUnit_Framework_TestCase
 
         $this->notifier->alert('error message', 'error');
 
-        $this->assertEquals($exptectedAlerts, $this->notifier->all());
+        $this->assertEquals($exptectedAlerts, $this->notifier->get());
     }
 }

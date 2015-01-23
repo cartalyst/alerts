@@ -23,7 +23,7 @@ namespace Cartalyst\Alerts\Tests;
 use Mockery as m;
 use Cartalyst\Alerts\Alerts;
 use Cartalyst\Alerts\Message;
-use Cartalyst\Alerts\Notifier;
+use Cartalyst\Alerts\Notifiers\Notifier;
 use PHPUnit_Framework_TestCase;
 use Illuminate\Support\MessageBag;
 
@@ -56,15 +56,22 @@ class AlertsTest extends PHPUnit_Framework_TestCase
     /** @test */
     public function it_can_add_and_retrieve_notifiers()
     {
-        $notifier1 = m::mock('Cartalyst\Alerts\NotifierInterface');
-        $notifier1->shouldReceive('all')
+        $notifier1 = m::mock('Cartalyst\Alerts\Notifiers\NotifierInterface');
+        $notifier1->shouldReceive('get')
             ->once()
             ->andReturn([$message = m::mock('Cartalyst\Alerts\Message')]);
 
-        $notifier2 = m::mock('Cartalyst\Alerts\NotifierInterface');
+        $notifier1->shouldReceive('getName')
+            ->once()
+            ->andReturn('flash');
 
-        $this->alerts->addNotifier('flash', $notifier1);
-        $this->alerts->addNotifier('view', $notifier2);
+        $notifier2 = m::mock('Cartalyst\Alerts\Notifiers\NotifierInterface');
+        $notifier2->shouldReceive('getName')
+            ->once()
+            ->andReturn('view');
+
+        $this->alerts->addNotifier($notifier1);
+        $this->alerts->addNotifier($notifier2);
 
         $this->alerts->removeNotifier('view');
 
@@ -80,12 +87,17 @@ class AlertsTest extends PHPUnit_Framework_TestCase
     /** @test */
     public function it_can_retrieve_all_alerts_except_a_specific_type()
     {
-        $notifier = m::mock('Cartalyst\Alerts\NotifierInterface');
-        $notifier->shouldReceive('all')
+        $notifier = m::mock('Cartalyst\Alerts\Notifiers\NotifierInterface');
+
+        $notifier->shouldReceive('get')
             ->once()
             ->andReturn([$message = new Message('foo', 'error', 'default')]);
 
-        $this->alerts->addNotifier('flash', $notifier);
+        $notifier->shouldReceive('getName')
+            ->once()
+            ->andReturn('flash');
+
+        $this->alerts->addNotifier($notifier);
 
         $this->assertEmpty($this->alerts->whereNotArea('default')->get());
     }
@@ -98,11 +110,16 @@ class AlertsTest extends PHPUnit_Framework_TestCase
             new Message('foo', 'warning', 'footer'),
         ];
 
-        $notifier = m::mock('Cartalyst\Alerts\NotifierInterface');
-        $notifier->shouldReceive('all')
+        $notifier = m::mock('Cartalyst\Alerts\Notifiers\NotifierInterface');
+
+        $notifier->shouldReceive('get')
             ->andReturn($alerts);
 
-        $this->alerts->addNotifier('flash', $notifier);
+        $notifier->shouldReceive('getName')
+            ->once()
+            ->andReturn('flash');
+
+        $this->alerts->addNotifier($notifier);
 
         $this->assertEquals($alerts[0], head($this->alerts->whereArea('header')->get()));
         $this->assertEquals($alerts[1], head($this->alerts->whereArea('footer')->get()));
@@ -116,12 +133,17 @@ class AlertsTest extends PHPUnit_Framework_TestCase
             new Message('foo', 'warning', 'default'),
         ];
 
-        $notifier = m::mock('Cartalyst\Alerts\NotifierInterface');
-        $notifier->shouldReceive('all')
+        $notifier = m::mock('Cartalyst\Alerts\Notifiers\NotifierInterface');
+
+        $notifier->shouldReceive('get')
             ->once()
             ->andReturn($alerts);
 
-        $this->alerts->addNotifier('flash', $notifier);
+        $notifier->shouldReceive('getName')
+            ->once()
+            ->andReturn('flash');
+
+        $this->alerts->addNotifier($notifier);
 
         $this->assertSame($alerts, $this->alerts->whereType(['error', 'warning'])->get());
     }
@@ -141,11 +163,16 @@ class AlertsTest extends PHPUnit_Framework_TestCase
 
         $alerts = array_merge($headerAlerts, $footerAlerts);
 
-        $notifier = m::mock('Cartalyst\Alerts\NotifierInterface');
-        $notifier->shouldReceive('all')
+        $notifier = m::mock('Cartalyst\Alerts\Notifiers\NotifierInterface');
+
+        $notifier->shouldReceive('get')
             ->andReturn($alerts);
 
-        $this->alerts->addNotifier('flash', $notifier);
+        $notifier->shouldReceive('getName')
+            ->once()
+            ->andReturn('flash');
+
+        $this->alerts->addNotifier($notifier);
 
         // Header alerts
         $this->assertEquals($headerAlerts, array_values($this->alerts->whereArea('header')->get()));
@@ -179,11 +206,16 @@ class AlertsTest extends PHPUnit_Framework_TestCase
 
         $alerts = array_merge($headerAlerts, $footerAlerts);
 
-        $notifier = m::mock('Cartalyst\Alerts\NotifierInterface');
-        $notifier->shouldReceive('all')
+        $notifier = m::mock('Cartalyst\Alerts\Notifiers\NotifierInterface');
+
+        $notifier->shouldReceive('get')
             ->andReturn($alerts);
 
-        $this->alerts->addNotifier('flash', $notifier);
+        $notifier->shouldReceive('getName')
+            ->once()
+            ->andReturn('flash');
+
+        $this->alerts->addNotifier($notifier);
 
         $this->assertEquals($footerAlerts, array_values($this->alerts->whereNotArea('header')->get()));
 
@@ -203,25 +235,29 @@ class AlertsTest extends PHPUnit_Framework_TestCase
     /** @test */
     public function it_can_retrieve_form_element_errors()
     {
-        $notifier = new Notifier();
+        // $notifier = new Notifier('flash');
 
-        $this->alerts->addNotifier('flash', $notifier);
+        // $this->alerts->addNotifier($notifier);
 
-        $messageBag = new MessageBag(['foo' => 'bar']);
+        // $messageBag = new MessageBag(['foo' => 'bar']);
 
-        $this->alerts->error($messageBag, 'form');
+        // $this->alerts->error($messageBag, 'form');
 
-        $this->assertEquals('overridden message', $this->alerts->form('foo', 'overridden message')) ;
+        // $this->assertEquals('overridden message', $this->alerts->form('foo', 'overridden message')) ;
 
-        $this->assertNull($this->alerts->form('bar'));
+        // $this->assertNull($this->alerts->form('bar'));
     }
 
     /** @test */
     public function it_can_retrieve_notifier()
     {
-        $notifier = m::mock('Cartalyst\Alerts\NotifierInterface');
+        $notifier = m::mock('Cartalyst\Alerts\Notifiers\NotifierInterface');
 
-        $this->alerts->addNotifier('foo', $notifier);
+        $notifier->shouldReceive('getName')
+            ->once()
+            ->andReturn('foo');
+
+        $this->alerts->addNotifier($notifier);
 
         $this->assertSame($notifier, $this->alerts->notifier('foo'));
         $this->assertSame($notifier, $this->alerts->foo());
