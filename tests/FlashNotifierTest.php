@@ -67,6 +67,6 @@ class FlashNotifierTest extends PHPUnit_Framework_TestCase
             ->with('cartalyst.alerts', [])
             ->once();
 
-        $this->notifier->all();
+        $this->notifier->get();
     }
 }
