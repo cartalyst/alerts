@@ -160,7 +160,7 @@ $alerts = Alert::get();
 ### Generating the alerts view
 
 ```php
-@foreach (Alert::all() as $alert)
+@foreach (Alert::get() as $alert)
 
 <div class="alert">
 
@@ -190,7 +190,7 @@ Alert::error('Error');
 The following view will output the class `alert-error` on the `div` tag.
 
 ```
-@foreach (Alert::all() as $alert)
+@foreach (Alert::get() as $alert)
 
 <div class="alert alert-{{ $alert->class }}">
 
