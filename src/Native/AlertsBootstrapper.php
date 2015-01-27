@@ -20,12 +20,12 @@
 
 namespace Cartalyst\Alerts\Native;
 
-use Illuminate\Session\Store;
-use Illuminate\Filesystem\Filesystem;
-use Cartalyst\Alerts\Notifier;
-use Illuminate\Session\FileSessionHandler;
 use Cartalyst\Alerts\Alerts;
-use Cartalyst\Alerts\FlashNotifier;
+use Illuminate\Session\Store;
+use Cartalyst\Alerts\Notifiers\Notifier;
+use Cartalyst\Alerts\Notifiers\FlashNotifier;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Session\FileSessionHandler;
 use Cartalyst\Alerts\Storage\NativeSession;
 
 class AlertsBootstrapper
@@ -46,10 +46,10 @@ class AlertsBootstrapper
     {
         $alerts = new Alerts();
 
-        $alerts->setDefaultNotifier(array_get($config, 'default'));
-
         $this->createNotifier($alerts);
         $this->createFlashNotifier($alerts);
+
+        $alerts->setDefaultNotifier(array_get(static::$config, 'default'));
 
         return $alerts;
     }
@@ -83,8 +83,8 @@ class AlertsBootstrapper
      */
     protected function createNotifier($alerts)
     {
-        $notifier = new Notifier(static::$config);
-        $alerts->addNotifier('default', $notifier);
+        $notifier = new Notifier('view', static::$config);
+        $alerts->addNotifier($notifier);
     }
 
     /**
@@ -96,8 +96,8 @@ class AlertsBootstrapper
     protected function createFlashNotifier($alerts)
     {
         if ($session = $this->createSession()) {
-            $flashNotifier = new FlashNotifier(static::$config, $session);
-            $alerts->addNotifier('flash', $flashNotifier);
+            $flashNotifier = new FlashNotifier('flash', static::$config, $session);
+            $alerts->addNotifier($flashNotifier);
         }
     }
 
@@ -111,7 +111,7 @@ class AlertsBootstrapper
         if (class_exists('Illuminate\Filesystem\Filesystem') && class_exists('Illuminate\Session\FileSessionHandler')) {
             $fileSessionHandler = new FileSessionHandler(new Filesystem(), __DIR__.'/../../../../../storage/sessions');
 
-            $store = new Store('foo', $fileSessionHandler);
+            $store = new Store('cartalyst.alerts', $fileSessionHandler);
 
             return new NativeSession($store);
         }
