@@ -51,7 +51,7 @@ class FlashNotifier extends Notifier
      */
     public function alert($messages, $type, $area = 'default', $isFlash = true, $extra = null)
     {
-        parent::alert($messages, $type, $area, $isFlash, $extra);
+        parent::alert($messages, $type, $area, true, $extra);
 
         $this->commit();
     }
