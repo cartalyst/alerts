@@ -46,9 +46,9 @@ class IlluminateSession implements StorageInterface
     /**
      * {@inheritDoc}
      */
-    public function get($key)
+    public function get($key, $default = null)
     {
-        return $this->session->get($key);
+        return $this->session->get($key, $default);
     }
 
     /**

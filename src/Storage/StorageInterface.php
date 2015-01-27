@@ -26,9 +26,10 @@ interface StorageInterface
      * Get the value from the storage.
      *
      * @param  string  $key
+     * @param  string  $default
      * @return mixed
      */
-    public function get($key);
+    public function get($key, $default = null);
 
     /**
      * Put a value.
