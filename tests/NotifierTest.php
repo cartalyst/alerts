@@ -21,8 +21,9 @@
 namespace Cartalyst\Alerts\Tests;
 
 use Cartalyst\Alerts\Message;
-use Cartalyst\Alerts\Notifiers\Notifier;
 use PHPUnit_Framework_TestCase;
+use Illuminate\Support\MessageBag;
+use Cartalyst\Alerts\Notifiers\Notifier;
 
 class NotifierTest extends PHPUnit_Framework_TestCase
 {
@@ -50,5 +51,30 @@ class NotifierTest extends PHPUnit_Framework_TestCase
         $this->notifier->alert('error message', 'error');
 
         $this->assertEquals($exptectedAlerts, $this->notifier->get());
+    }
+
+    /** @test */
+    public function it_can_retrieve_notifier_name()
+    {
+        $this->assertEquals('flash', $this->notifier->getName());
+    }
+
+    /** @test */
+    public function it_can_set_unknown_types_of_alerts()
+    {
+        $this->notifier->foo('bar');
+
+        $this->assertEquals('foo', head($this->notifier->get())->type);
+    }
+
+    /** @test */
+    public function it_can_handle_message_bags()
+    {
+        $bag = new MessageBag(['foo' => 'bar']);
+
+        $this->notifier->error($bag);
+
+        $this->assertEquals('error', head($this->notifier->get())->type);
+        $this->assertEquals('bar', head($this->notifier->get())->message);
     }
 }

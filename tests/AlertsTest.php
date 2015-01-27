@@ -23,9 +23,9 @@ namespace Cartalyst\Alerts\Tests;
 use Mockery as m;
 use Cartalyst\Alerts\Alerts;
 use Cartalyst\Alerts\Message;
-use Cartalyst\Alerts\Notifiers\Notifier;
 use PHPUnit_Framework_TestCase;
 use Illuminate\Support\MessageBag;
+use Cartalyst\Alerts\Notifiers\Notifier;
 
 class AlertsTest extends PHPUnit_Framework_TestCase
 {
@@ -74,6 +74,8 @@ class AlertsTest extends PHPUnit_Framework_TestCase
         $this->alerts->addNotifier($notifier2);
 
         $this->alerts->removeNotifier('view');
+
+        $this->assertSame(['flash' => $notifier1], $this->alerts->getNotifiers());
 
         $this->assertSame($message, head($this->alerts->get()));
     }
@@ -233,19 +235,19 @@ class AlertsTest extends PHPUnit_Framework_TestCase
     }
 
     /** @test */
-    public function it_can_retrieve_form_element_errors()
+    public function it_can_retrieve_special_area_methods_using_dynamic_on_methods()
     {
-        // $notifier = new Notifier('flash');
+        $notifier = new Notifier('flash');
 
-        // $this->alerts->addNotifier($notifier);
+        $this->alerts->addNotifier($notifier);
 
-        // $messageBag = new MessageBag(['foo' => 'bar']);
+        $messageBag = new MessageBag(['foo' => 'bar']);
 
-        // $this->alerts->error($messageBag, 'form');
+        $this->alerts->error($messageBag, 'form');
 
-        // $this->assertEquals('overridden message', $this->alerts->form('foo', 'overridden message')) ;
+        $this->assertEquals('overridden message', $this->alerts->onForm('foo', 'overridden message')) ;
 
-        // $this->assertNull($this->alerts->form('bar'));
+        $this->assertNull($this->alerts->onForm('bar'));
     }
 
     /** @test */
