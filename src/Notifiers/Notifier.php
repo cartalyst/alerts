@@ -109,7 +109,7 @@ class Notifier implements NotifierInterface
     {
         list($message, $area) = $this->parseParameters($parameters);
 
-        $class = array_get($this->config, $method, $method);
+        $class = isset($this->config[$method]) ? $this->config[$method] : $method;
 
         return $this->alert($message, $method, $area, false, $class);
     }
@@ -133,9 +133,10 @@ class Notifier implements NotifierInterface
      */
     protected function parseParameters($parameters)
     {
-        $message = array_get($parameters, 0);
-        $area = array_get($parameters, 1, 'default');
+        $message = isset($parameters[0]) ? $parameters[0] : null;
 
-        return [$message, $area];
+        $area = isset($parameters[1]) ? $parameters[1] : 'default';
+
+        return [ $message, $area ];
     }
 }

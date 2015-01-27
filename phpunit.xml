@@ -18,6 +18,10 @@
 	<filter>
 		<whitelist>
 			<directory suffix=".php">./src/</directory>
+			<exclude>
+				<file>./src/Laravel/Facades/Alert.php</file>
+				<file>./src/Laravel/AlertsServiceProvider.php</file>
+			</exclude>
 		</whitelist>
 	</filter>
 	<logging>

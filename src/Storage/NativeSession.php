@@ -39,13 +39,15 @@ class NativeSession extends IlluminateSession implements StorageInterface
         parent::__construct($session, $instance, $key);
 
         // Cookie configuration
-        $lifetime = array_get($config, 'lifetime', 120);
-        $path     = array_get($config, 'path', '/');
-        $domain   = array_get($config, 'domain', null);
-        $secure   = array_get($config, 'secure', false);
-        $httpOnly = array_get($config, 'httpOnly', true);
+        $lifetime = isset($config['lifetime']) ? $config['lifetime'] : 120;
+        $path     = isset($config['path']) ? $config['path'] : '/';
+        $domain   = isset($config['domain']) ? $config['domain'] : null;
+        $secure   = isset($config['secure']) ? $config['secure'] : false;
+        $httpOnly = isset($config['httpOnly']) ? $config['httpOnly'] : true;
 
-        if ($cookieId = array_get($_COOKIE, $session->getName())) {
+        if (isset($_COOKIE[$session->getName()])) {
+            $cookieId = $_COOKIE[$session->getName()];
+
             $session->setId($cookieId);
 
             $session->setName($cookieId);

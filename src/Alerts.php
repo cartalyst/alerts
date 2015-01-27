@@ -110,7 +110,7 @@ class Alerts
      */
     public function notifier($name, $default = null)
     {
-        return array_get($this->notifiers, $name, $default);
+        return isset($this->notifiers[$name]) ? $this->notifiers[$name] : $default;
     }
 
     /**
@@ -143,11 +143,11 @@ class Alerts
      */
     public function __call($method, $parameters)
     {
-        if ($notifier = array_get($this->notifiers, $method)) {
-            return $notifier;
+        if (isset($this->notifiers[$method])) {
+            return $this->notifiers[$method];
         }
 
-        if (starts_with($method, 'on') !== false) {
+        if (strpos($method, 'on') !== false) {
             $area = strtolower(substr($method, 2));
 
             $messages = $this->whereArea($area)->get();
@@ -242,14 +242,14 @@ class Alerts
         if ($filters) {
             $type = $exclude ? 'exclude' : 'include';
 
-            array_set($this->filters, "{$type}.{$zone}", array_merge(array_get($this->filters, "{$type}.{$zone}", []), $filters));
+            $this->filters[$type][$zone] = array_merge(array_get($this->filters, "{$type}.{$zone}", []), $filters);
 
             $alerts = array_filter($alerts, function ($message) use ($zone, $filters, $exclude) {
                 if ($exclude) {
                     return ! in_array($message->{$zone}, $filters);
-                } else {
-                    return in_array($message->{$zone}, $filters);
                 }
+
+                return in_array($message->{$zone}, $filters);
             });
         }
 
@@ -270,5 +270,4 @@ class Alerts
 
         return $alerts;
     }
-
 }

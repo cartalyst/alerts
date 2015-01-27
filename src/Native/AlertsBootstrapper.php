@@ -22,11 +22,11 @@ namespace Cartalyst\Alerts\Native;
 
 use Cartalyst\Alerts\Alerts;
 use Illuminate\Session\Store;
-use Cartalyst\Alerts\Notifiers\Notifier;
-use Cartalyst\Alerts\Notifiers\FlashNotifier;
 use Illuminate\Filesystem\Filesystem;
+use Cartalyst\Alerts\Notifiers\Notifier;
 use Illuminate\Session\FileSessionHandler;
 use Cartalyst\Alerts\Storage\NativeSession;
+use Cartalyst\Alerts\Notifiers\FlashNotifier;
 
 class AlertsBootstrapper
 {
@@ -47,9 +47,10 @@ class AlertsBootstrapper
         $alerts = new Alerts();
 
         $this->createNotifier($alerts);
+
         $this->createFlashNotifier($alerts);
 
-        $alerts->setDefaultNotifier(isset($config['default']) ? $config['default'] : 'flash');
+        $alerts->setDefaultNotifier(isset(static::$config['default']) ? static::$config['default'] : 'flash');
 
         return $alerts;
     }
@@ -83,8 +84,9 @@ class AlertsBootstrapper
      */
     protected function createNotifier($alerts)
     {
-        $notifier = new Notifier('view', static::$config);
-        $alerts->addNotifier($notifier);
+        $alerts->addNotifier(
+            new Notifier('view', static::$config)
+        );
     }
 
     /**
@@ -96,8 +98,9 @@ class AlertsBootstrapper
     protected function createFlashNotifier($alerts)
     {
         if ($session = $this->createSession()) {
-            $flashNotifier = new FlashNotifier('flash', static::$config, $session);
-            $alerts->addNotifier($flashNotifier);
+            $alerts->addNotifier(
+                new FlashNotifier('flash', static::$config, $session)
+            );
         }
     }
 

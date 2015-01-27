@@ -89,6 +89,6 @@ class Alert
     {
         $instance = static::instance()->getAlerts();
 
-        return call_user_func_array([$instance, $method], $args);
+        return call_user_func_array([ $instance, $method ], $args);
     }
 }
