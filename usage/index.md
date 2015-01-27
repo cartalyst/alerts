@@ -150,7 +150,7 @@ Alert::whereNotArea([ 'foo', 'bar' ])->get();
 
 #### Alert::get()
 
-You can retrieve all or the filtered list of alerts using the `get` method. Calling this method will also reset any applied filters.
+You can retrieve all or the filtered list of alerts using the `get` method. Calling this method will return a list of alerts and reset any applied filters afterwards.
 
 ```php
 // All alerts
