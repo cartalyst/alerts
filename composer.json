@@ -46,8 +46,8 @@
 		"phpunit/phpunit": "~4.0"
 	},
 	"suggest": {
-		"illuminate/session": "Send flash messages across requests.",
-		"illuminate/filesystem": "Send flash messages across requests."
+		"illuminate/session": "Required to send flash messages across requests. (~4.1)",
+		"illuminate/filesystem": "Required to send flash messages across requests. (~4.1)"
 	},
 	"autoload": {
 		"psr-4": {
