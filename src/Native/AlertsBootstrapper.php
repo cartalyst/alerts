@@ -49,7 +49,7 @@ class AlertsBootstrapper
         $this->createNotifier($alerts);
         $this->createFlashNotifier($alerts);
 
-        $alerts->setDefaultNotifier(isset($config['default']) ? $config['default'] : 'flash');
+        $alerts->setDefaultNotifier(isset(static::$config['default']) ? static::$config['default'] : 'flash');
 
         return $alerts;
     }
