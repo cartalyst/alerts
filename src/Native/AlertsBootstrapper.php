@@ -49,7 +49,7 @@ class AlertsBootstrapper
         $this->createNotifier($alerts);
         $this->createFlashNotifier($alerts);
 
-        $alerts->setDefaultNotifier(array_get(static::$config, 'default'));
+        $alerts->setDefaultNotifier(isset($config['default']) ? $config['default'] : 'flash');
 
         return $alerts;
     }
@@ -111,7 +111,7 @@ class AlertsBootstrapper
         if (class_exists('Illuminate\Filesystem\Filesystem') && class_exists('Illuminate\Session\FileSessionHandler')) {
             $fileSessionHandler = new FileSessionHandler(new Filesystem(), __DIR__.'/../../../../../storage/sessions');
 
-            $store = new Store('cartalyst.alerts', $fileSessionHandler);
+            $store = new Store('alerts', $fileSessionHandler);
 
             return new NativeSession($store);
         }
