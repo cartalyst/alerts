@@ -33,19 +33,29 @@ class AlertsServiceProvider extends ServiceProvider
     /**
      * {@inheritDoc}
      */
-    public function boot()
-    {
-        $this->package('cartalyst/alerts', 'cartalyst/alerts', __DIR__.'/..');
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function register()
     {
+        $this->prepareResources();
+
         $this->registerSession();
 
         $this->registerAlerts();
+    }
+
+    /**
+     * Prepare the package resources.
+     *
+     * @return void
+     */
+    protected function prepareResources()
+    {
+        $config = realpath(__DIR__.'/../config/config.php');
+
+        $this->mergeConfigFrom($config, 'cartalyst.alerts');
+
+        $this->publishes([
+            $config => config_path('cartalyst.alerts.php'),
+        ], 'config');
     }
 
     /**
@@ -66,7 +76,7 @@ class AlertsServiceProvider extends ServiceProvider
     protected function registerAlerts()
     {
         $this->app->bindShared('alerts', function($app) {
-            $config = $this->app['config']['cartalyst/alerts::config'];
+            $config = $this->app['config']->get('cartalyst.alerts');
 
             $alerts = $this->app->make('Cartalyst\Alerts\Alerts');
 
