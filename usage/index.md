@@ -92,7 +92,7 @@ The methods below can be chained to filter down alerts more than once.
 Alert::whereType('foo')->whereArea('bar')->get();
 ```
 
-#### `Alert::whereType($type|$types)`
+#### Alert::whereType($type|$types)
 
 This method will filter down alerts based on the given type(s).
 
@@ -106,7 +106,7 @@ Alert::whereType('foo')->get();
 Alert::whereType([ 'foo', 'bar' ])->get();
 ```
 
-#### `Alert::whereArea($area|$areas)`
+#### Alert::whereArea($area|$areas)
 
 This method will filter down alerts based on the given area(s).
 
@@ -120,7 +120,7 @@ Alert::whereArea('foo')->get();
 Alert::whereArea([ 'foo', 'bar' ])->get();
 ```
 
-#### `Alert::whereNotType($type|$types)`
+#### Alert::whereNotType($type|$types)
 
 This method will filter down alerts excluding the given type(s).
 
@@ -134,7 +134,7 @@ Alert::whereNotType('foo')->get();
 Alert::whereNotType([ 'foo', 'bar' ])->get();
 ```
 
-#### `Alert::whereNotArea($type|$types)`
+#### Alert::whereNotArea($type|$types)
 
 This method will filter down alerts excluding the given area(s).
 
