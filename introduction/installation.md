@@ -6,7 +6,16 @@ The best and easiest way to install the Alerts package is with [Composer](http:/
 
 Open your `composer.json` file and add the following to the `require` array:
 
-    "cartalyst/alerts": "2.0.*"
+	"cartalyst/alerts": "2.0.*"
+
+Add the following lines after the `require` array on your `composer.json` file:
+
+	"repositories": [
+		{
+			"type": "composer",
+			"url": "https://packages.cartalyst.com"
+		}
+	],
 
 > **Note:** Make sure that after the required changes your `composer.json` file is valid by running `composer validate`.
 
