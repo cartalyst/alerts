@@ -48,7 +48,7 @@ Sending alerts using a different notifier requires retrieving the notifier first
 
 ##### Usage
 
-Assuming we have a `view` notifier we can the following.
+Assuming we have a `view` notifier we can do the following.
 
 ```php
 // Call the notifier `key` on the facade to retrieve the notifier.
