@@ -1,6 +1,6 @@
 ## Usage
 
-In this section we'll show how you can make us of the alerts package.
+In this section we'll show how you can make use of the alerts package.
 
 ### Alert Types
 
