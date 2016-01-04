@@ -75,7 +75,7 @@ class AlertsServiceProvider extends ServiceProvider
      */
     protected function registerAlerts()
     {
-        $this->app->bindShared('alerts', function($app) {
+        $this->app->singleton('alerts', function($app) {
             $config = $this->app['config']->get('cartalyst.alerts');
 
             $alerts = $this->app->make('Cartalyst\Alerts\Alerts');
@@ -101,7 +101,7 @@ class AlertsServiceProvider extends ServiceProvider
      */
     protected function registerSession()
     {
-        $this->app['Cartalyst\Alerts\Storage\StorageInterface'] = $this->app->share(function ($app) {
+        $this->app->singleton('Cartalyst\Alerts\Storage\StorageInterface', function ($app) {
             return new IlluminateSession($app['session.store']);
         });
     }
