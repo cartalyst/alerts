@@ -1,6 +1,6 @@
 # Alerts
 
-[![Build Status](http://ci.cartalyst.com/build-status/svg/34)](http://ci.cartalyst.com/build-status/view/34)
+[![Build Status](https://travis-ci.org/cartalyst/alerts.svg?branch=2.0)](https://travis-ci.org/cartalyst/alerts)
 
 Alerts allows you to easily pass alerts to your views.
 
