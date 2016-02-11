@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v2.0.1 - 2016-02-11
+
+`REVISED`
+
+- Use `singleton` instead of `bindShared` to support Laravel 5.2.x.
+
 ### v2.0.0 - 2015-02-17
 
 - Updated for Laravel 5.
