@@ -112,7 +112,7 @@ class AlertsBootstrapper
     protected function createSession()
     {
         if (class_exists('Illuminate\Filesystem\Filesystem') && class_exists('Illuminate\Session\FileSessionHandler')) {
-            $fileSessionHandler = new FileSessionHandler(new Filesystem(), __DIR__.'/../../../../../storage/sessions');
+            $fileSessionHandler = new FileSessionHandler(new Filesystem(), __DIR__.'/../../../../../storage/sessions', 5);
 
             $store = new Store('alerts', $fileSessionHandler);
 
