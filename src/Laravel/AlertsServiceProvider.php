@@ -21,6 +21,8 @@
 namespace Cartalyst\Alerts\Laravel;
 
 use Illuminate\Support\ServiceProvider;
+use Cartalyst\Alerts\Notifiers\Notifier;
+use Cartalyst\Alerts\Notifiers\FlashNotifier;
 use Cartalyst\Alerts\Storage\IlluminateSession;
 
 class AlertsServiceProvider extends ServiceProvider
@@ -80,13 +82,11 @@ class AlertsServiceProvider extends ServiceProvider
 
             $alerts = $this->app->make('Cartalyst\Alerts\Alerts');
 
-            $alerts->addNotifier(
-                $this->app->make('Cartalyst\Alerts\Notifiers\Notifier', [ 'view', $config['classes'] ])
-            );
+            $viewNotifier  = new Notifier('view', $config['classes']);
+            $flashNotifier = new FlashNotifier('flash', $config['classes'], $this->app['Cartalyst\Alerts\Storage\StorageInterface']);
 
-            $alerts->addNotifier(
-                $this->app->make('Cartalyst\Alerts\Notifiers\FlashNotifier', [ 'flash', $config['classes'] ])
-            );
+            $alerts->addNotifier($viewNotifier);
+            $alerts->addNotifier($flashNotifier);
 
             $alerts->setDefaultNotifier($config['default']);
 
