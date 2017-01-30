@@ -11,6 +11,16 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v2.0.2 - 2017-01-30
+
+`REVISED`
+
+- Update service provider for Laravel 5.4 support.
+
+`FIXED`
+
+- A bug on FileSessionHandler instantation when using the native bootstrapper.
+
 ### v2.0.1 - 2016-02-11
 
 `REVISED`
