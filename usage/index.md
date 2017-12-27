@@ -86,7 +86,7 @@ Alert::view()->error('Error message');
 
 In addition to a message, the various notifiers accept an optional second argument, which is an area name. Areas are useful for displaying messages in specific places within the rendered response output.
 
-When an area is not specfied, the `detault` area is used, which may not be ideal in all scenarios.
+When an area is not specfied, the `default` area is used, which may not be ideal in all scenarios.
 
 For example, your layout might normally output alerts at the top of the page, but perhaps you would like to display alerts that are specific to a particular area of the layout in context, and not at the top of the page.
 
