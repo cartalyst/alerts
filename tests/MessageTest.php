@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Alerts package.
  *
  * NOTICE OF LICENSE
@@ -21,17 +21,15 @@
 namespace Cartalyst\Alerts\Tests;
 
 use Mockery as m;
-use PHPUnit_Framework_TestCase;
 use Cartalyst\Alerts\Message;
+use PHPUnit\Framework\TestCase;
 
-class MessageTest extends PHPUnit_Framework_TestCase
+class MessageTest extends TestCase
 {
     /**
-     * Close mockery.
-     *
-     * @return void
+     * {@inheritdoc}
      */
-    public function tearDown()
+    protected function tearDown(): void
     {
         m::close();
     }
@@ -41,11 +39,12 @@ class MessageTest extends PHPUnit_Framework_TestCase
     {
         $message = new Message('foo', 'form', 'default', false, 'class', 'foo_key');
 
-        $this->assertEquals('foo', $message->message);
-        $this->assertEquals('form', $message->type);
-        $this->assertEquals('default', $message->area);
+        $this->assertSame('foo', $message->message);
+        $this->assertSame('form', $message->type);
+        $this->assertSame('default', $message->area);
+        $this->assertSame('class', $message->class);
+        $this->assertSame('foo_key', $message->getKey());
+
         $this->assertFalse($message->isFlash);
-        $this->assertEquals('class', $message->class);
-        $this->assertEquals('foo_key', $message->getKey());
     }
 }

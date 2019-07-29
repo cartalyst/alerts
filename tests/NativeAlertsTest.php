@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Alerts package.
  *
  * NOTICE OF LICENSE
@@ -21,28 +21,17 @@
 namespace Cartalyst\Alerts\Tests;
 
 use Mockery as m;
-use PHPUnit_Framework_TestCase;
+use Cartalyst\Alerts\Alerts;
+use PHPUnit\Framework\TestCase;
 use Cartalyst\Alerts\Native\Facades\Alert;
 use Cartalyst\Alerts\Native\AlertsBootstrapper;
 
-class NativeAlertsTest extends PHPUnit_Framework_TestCase
+class NativeAlertsTest extends TestCase
 {
     /**
-     * Close mockery.
-     *
-     * @return void
+     * {@inheritdoc}
      */
-    public function tearDown()
-    {
-        m::close();
-    }
-
-    /**
-     * Setup.
-     *
-     * @return void
-     */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -51,6 +40,14 @@ class NativeAlertsTest extends PHPUnit_Framework_TestCase
         $instance = Alert::instance();
 
         $this->alerts = $instance->getAlerts();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function tearDown(): void
+    {
+        m::close();
     }
 
     /** @test */
@@ -62,7 +59,7 @@ class NativeAlertsTest extends PHPUnit_Framework_TestCase
     /** @test */
     public function it_can_instantiate_alerts()
     {
-        $this->assertInstanceOf('Cartalyst\Alerts\Alerts', $this->alerts);
+        $this->assertInstanceOf(Alerts::class, $this->alerts);
     }
 
     /** @test */
@@ -70,7 +67,7 @@ class NativeAlertsTest extends PHPUnit_Framework_TestCase
     {
         $this->alerts->error('foo');
 
-        $this->assertEquals('foo', head($this->alerts->get())->message);
-        $this->assertEquals('error', head($this->alerts->get())->type);
+        $this->assertSame('foo', head($this->alerts->get())->message);
+        $this->assertSame('error', head($this->alerts->get())->type);
     }
 }

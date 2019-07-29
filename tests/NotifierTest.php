@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Alerts package.
  *
  * NOTICE OF LICENSE
@@ -20,19 +20,16 @@
 
 namespace Cartalyst\Alerts\Tests;
 
-use Cartalyst\Alerts\Message;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Illuminate\Support\MessageBag;
 use Cartalyst\Alerts\Notifiers\Notifier;
 
-class NotifierTest extends PHPUnit_Framework_TestCase
+class NotifierTest extends TestCase
 {
     /**
-     * Setup.
-     *
-     * @return void
+     * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -42,21 +39,17 @@ class NotifierTest extends PHPUnit_Framework_TestCase
     /** @test */
     public function it_can_alert_and_retrieve_all()
     {
-        $message = new Message('error message', 'error');
+        $this->notifier->alert('Error Message', 'error');
 
-        $exptectedAlerts = [
-            $message,
-        ];
+        $this->assertCount(1, $this->notifier->get());
 
-        $this->notifier->alert('error message', 'error');
-
-        $this->assertEquals($exptectedAlerts, $this->notifier->get());
+        $this->assertSame('Error Message', $this->notifier->get()[0]->message);
     }
 
     /** @test */
     public function it_can_retrieve_notifier_name()
     {
-        $this->assertEquals('flash', $this->notifier->getName());
+        $this->assertSame('flash', $this->notifier->getName());
     }
 
     /** @test */
@@ -64,7 +57,7 @@ class NotifierTest extends PHPUnit_Framework_TestCase
     {
         $this->notifier->foo('bar');
 
-        $this->assertEquals('foo', head($this->notifier->get())->type);
+        $this->assertSame('foo', $this->notifier->get()[0]->type);
     }
 
     /** @test */
@@ -74,7 +67,7 @@ class NotifierTest extends PHPUnit_Framework_TestCase
 
         $this->notifier->error($bag);
 
-        $this->assertEquals('error', head($this->notifier->get())->type);
-        $this->assertEquals('bar', head($this->notifier->get())->message);
+        $this->assertSame('error', $this->notifier->get()[0]->type);
+        $this->assertSame('bar', $this->notifier->get()[0]->message);
     }
 }

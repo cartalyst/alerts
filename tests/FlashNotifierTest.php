@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Alerts package.
  *
  * NOTICE OF LICENSE
@@ -21,52 +21,41 @@
 namespace Cartalyst\Alerts\Tests;
 
 use Mockery as m;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Cartalyst\Alerts\Notifiers\FlashNotifier;
+use Cartalyst\Alerts\Storage\IlluminateSession;
 
-class FlashNotifierTest extends PHPUnit_Framework_TestCase
+class FlashNotifierTest extends TestCase
 {
     /**
-     * Close mockery.
-     *
-     * @return void
+     * {@inheritdoc}
      */
-    public function tearDown()
-    {
-        m::close();
-    }
-
-    /**
-     * Setup.
-     *
-     * @return void
-     */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
-        $this->session = m::mock('Cartalyst\Alerts\Storage\IlluminateSession');
+        $this->session = m::mock(IlluminateSession::class);
 
         $this->notifier = new FlashNotifier('flash', [], $this->session);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function tearDown(): void
+    {
+        m::close();
     }
 
     /** @test */
     public function it_can_flash_an_alert()
     {
-        $this->session->shouldReceive('flash')
-            ->with('cartalyst.alerts', m::any())
-            ->once();
+        $this->session->shouldReceive('flash')->with('cartalyst.alerts', m::any())->once();
+
+        $this->session->shouldReceive('get')->with('cartalyst.alerts', [])->once();
 
         $this->notifier->alert('foo', 'form');
-    }
 
-    /** @test */
-    public function it_can_retrieve_all_flash_messages()
-    {
-        $this->session->shouldReceive('get')
-            ->with('cartalyst.alerts', [])
-            ->once();
-
-        $this->notifier->get();
+        $this->assertEmpty($this->notifier->get());
     }
 }
