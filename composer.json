@@ -1,64 +1,55 @@
 {
-	"name": "cartalyst/alerts",
-	"description": "Alerts allows you to easily pass alert messages to your views.",
-	"keywords": [
-		"php",
-		"cartalyst",
-		"laravel",
-		"messages",
-		"flash",
-		"alerts"
-	],
-	"license": "BSD-3-Clause",
-	"authors": [
-		{
-			"name": "Cartalyst LLC",
-			"email": "help@cartalyst.com"
-		},
-		{
-			"name": "Bruno Gaspar",
-			"email": "bruno.gaspar@cartalyst.com",
-			"role": "Developer"
-		},
-		{
-			"name": "Dan Syme",
-			"email": "dan.syme@cartalyst.com",
-			"role": "Project Lead"
-		},
-		{
-			"name": "Suhayb Wardany",
-			"email": "su.wardany@cartalyst.com",
-			"role": "Developer"
-		}
-	],
-	"repositories": [
-		{
-			"type": "composer",
-			"url": "http://packages.cartalyst.com"
-		}
-	],
-	"require": {
-		"php": ">=5.4.0",
-		"illuminate/support": "~5.0"
-	},
-	"require-dev": {
-		"mockery/mockery": "~0.9",
-		"phpunit/phpunit": "~4.0"
-	},
-	"suggest": {
-		"illuminate/session": "Required to send flash messages across requests. (~4.1)",
-		"illuminate/filesystem": "Required to send flash messages across requests. (~4.1)"
-	},
-	"autoload": {
-		"psr-4": {
-			"Cartalyst\\Alerts\\": "src/"
-		}
-	},
-	"extra": {
-		"component": "package",
-		"branch-alias": {
-			"dev-master": "2.0.x-dev"
-		}
-	},
-	"minimum-stability": "dev"
+    "name": "cartalyst/alerts",
+    "description": "Alerts allows you to easily pass alert messages to your views.",
+    "keywords": [
+        "php",
+        "cartalyst",
+        "laravel",
+        "messages",
+        "flash",
+        "alerts"
+    ],
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Cartalyst LLC",
+            "email": "help@cartalyst.com",
+            "homepage": "https://cartalyst.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "illuminate/support": "~5.0"
+    },
+    "require-dev": {
+        "mockery/mockery": "~0.9",
+        "phpunit/phpunit": "~4.0"
+    },
+    "suggest": {
+        "illuminate/session": "Required to send flash messages across requests. (~4.1)",
+        "illuminate/filesystem": "Required to send flash messages across requests. (~4.1)"
+    },
+    "autoload": {
+        "psr-4": {
+            "Cartalyst\\Alerts\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Cartalyst\\Alerts\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "extra": {
+        "component": "package",
+        "branch-alias": {
+            "dev-master": "2.0.x-dev"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
