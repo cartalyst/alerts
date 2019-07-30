@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Alerts package.
  *
  * NOTICE OF LICENSE
@@ -28,12 +28,12 @@ use Cartalyst\Alerts\Storage\IlluminateSession;
 class AlertsServiceProvider extends ServiceProvider
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected $defer = true;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function register()
     {
@@ -61,7 +61,7 @@ class AlertsServiceProvider extends ServiceProvider
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function provides()
     {
@@ -77,12 +77,12 @@ class AlertsServiceProvider extends ServiceProvider
      */
     protected function registerAlerts()
     {
-        $this->app->singleton('alerts', function($app) {
+        $this->app->singleton('alerts', function ($app) {
             $config = $this->app['config']->get('cartalyst.alerts');
 
             $alerts = $this->app->make('Cartalyst\Alerts\Alerts');
 
-            $viewNotifier  = new Notifier('view', $config['classes']);
+            $viewNotifier = new Notifier('view', $config['classes']);
             $flashNotifier = new FlashNotifier('flash', $config['classes'], $this->app['Cartalyst\Alerts\Storage\StorageInterface']);
 
             $alerts->addNotifier($viewNotifier);

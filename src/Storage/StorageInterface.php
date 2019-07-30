@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Alerts package.
  *
  * NOTICE OF LICENSE
@@ -25,8 +25,9 @@ interface StorageInterface
     /**
      * Get the value from the storage.
      *
-     * @param  string  $key
-     * @param  string  $default
+     * @param mixed $key
+     * @param mixed $default
+     *
      * @return mixed
      */
     public function get($key, $default = null);
@@ -34,9 +35,10 @@ interface StorageInterface
     /**
      * Put a value.
      *
-     * @param  string  $key
-     * @param  mixed  $value
+     * @param string $key
+     * @param mixed  $value
+     *
      * @return void
      */
-    public function flash($key, $value);
+    public function flash(string $key, $value): void;
 }

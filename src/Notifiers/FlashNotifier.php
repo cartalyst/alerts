@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Alerts package.
  *
  * NOTICE OF LICENSE
@@ -34,12 +34,13 @@ class FlashNotifier extends Notifier
     /**
      * Constructor.
      *
-     * @param  string  $name
-     * @param  array  $config
-     * @param  \Cartalyst\Alerts\Storage\StorageInterface  $session
+     * @param string                                     $name
+     * @param array                                      $config
+     * @param \Cartalyst\Alerts\Storage\StorageInterface $session
+     *
      * @return void
      */
-    public function __construct($name, array $config = [], StorageInterface $session)
+    public function __construct(string $name, array $config, StorageInterface $session)
     {
         parent::__construct($name, $config);
 
@@ -47,9 +48,9 @@ class FlashNotifier extends Notifier
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public function alert($messages, $type, $area = 'default', $isFlash = true, $extra = null)
+    public function alert($messages, string $type, string $area = 'default', bool $isFlash = true, ?string $extra = null): void
     {
         parent::alert($messages, $type, $area, true, $extra);
 
@@ -57,17 +58,17 @@ class FlashNotifier extends Notifier
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public function get()
+    public function get(): array
     {
-        return $this->session->get('cartalyst.alerts', []);
+        return (array) $this->session->get('cartalyst.alerts', []);
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    protected function commit()
+    protected function commit(): void
     {
         $this->session->flash('cartalyst.alerts', $this->alerts);
     }

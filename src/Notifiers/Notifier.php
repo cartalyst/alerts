@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Alerts package.
  *
  * NOTICE OF LICENSE
@@ -49,11 +49,12 @@ class Notifier implements NotifierInterface
     /**
      * Constructor.
      *
-     * @param  string  $name
-     * @param  array  $config
+     * @param string $name
+     * @param array  $config
+     *
      * @return void
      */
-    public function __construct($name, array $config = [])
+    public function __construct(string $name, array $config = [])
     {
         $this->name = $name;
 
@@ -61,21 +62,21 @@ class Notifier implements NotifierInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public function alert($messages, $type, $area = 'default', $isFlash = false, $class = null)
+    public function alert($messages, string $type, string $area = 'default', bool $isFlash = false, ?string $class = null): void
     {
         $this->remove($type);
 
-        if ( ! is_array($messages)) {
+        if (! is_array($messages)) {
             $messages = [$messages];
         }
 
@@ -91,9 +92,9 @@ class Notifier implements NotifierInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public function get()
+    public function get(): array
     {
         return $this->alerts;
     }
@@ -101,26 +102,28 @@ class Notifier implements NotifierInterface
     /**
      * Dynamically passes alerts to the view.
      *
-     * @param  string  $method
-     * @param  array  $parameters
+     * @param string $method
+     * @param array  $parameters
+     *
      * @return void
      */
-    public function __call($method, $parameters)
+    public function __call(string $method, array $parameters): void
     {
         list($message, $area) = $this->parseParameters($parameters);
 
         $class = isset($this->config[$method]) ? $this->config[$method] : $method;
 
-        return $this->alert($message, $method, $area, false, $class);
+        $this->alert($message, $method, $area, false, $class);
     }
 
     /**
      * Removes the given type from messages.
      *
-     * @param  string  $type
+     * @param string $type
+     *
      * @return void
      */
-    protected function remove($type)
+    protected function remove($type): void
     {
         unset($this->alerts[$type]);
     }
@@ -128,15 +131,16 @@ class Notifier implements NotifierInterface
     /**
      * Parses parameters.
      *
-     * @param  array  $parameters
+     * @param array $parameters
+     *
      * @return array
      */
-    protected function parseParameters($parameters)
+    protected function parseParameters($parameters): array
     {
-        $message = isset($parameters[0]) ? $parameters[0] : null;
+        $message = $parameters[0] ?? null;
 
-        $area = isset($parameters[1]) ? $parameters[1] : 'default';
+        $area = $parameters[1] ?? 'default';
 
-        return [ $message, $area ];
+        return [$message, $area];
     }
 }

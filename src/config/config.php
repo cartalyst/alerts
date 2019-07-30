@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Alerts package.
  *
  * NOTICE OF LICENSE
@@ -19,7 +19,6 @@
  */
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Default Notifier
@@ -50,8 +49,5 @@ return [
     |
     */
 
-    'classes' => [
-
-    ],
-
+    'classes' => [],
 ];

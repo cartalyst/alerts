@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Alerts package.
  *
  * NOTICE OF LICENSE
@@ -67,14 +67,16 @@ class Message
     /**
      * Constructor.
      *
-     * @param  string  $key
-     * @param  string  $message
-     * @param  string  $type
-     * @param  string  $area
-     * @param  bool  $isFlash
+     * @param string      $message
+     * @param string      $type
+     * @param string      $area
+     * @param bool        $isFlash
+     * @param string|null $class
+     * @param string|null $key
+     *
      * @return void
      */
-    public function __construct($message, $type, $area = 'default', $isFlash = false, $class = null, $key = null)
+    public function __construct(string $message, string $type, string $area = 'default', bool $isFlash = false, ?string $class = null, ?string $key = null)
     {
         $this->message = $message;
         $this->type    = $type;
@@ -89,7 +91,7 @@ class Message
      *
      * @return string
      */
-    public function getKey()
+    public function getKey(): string
     {
         return $this->key;
     }

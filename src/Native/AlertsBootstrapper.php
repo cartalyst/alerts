@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Alerts package.
  *
  * NOTICE OF LICENSE
@@ -27,6 +27,7 @@ use Cartalyst\Alerts\Notifiers\Notifier;
 use Illuminate\Session\FileSessionHandler;
 use Cartalyst\Alerts\Storage\NativeSession;
 use Cartalyst\Alerts\Notifiers\FlashNotifier;
+use Cartalyst\Alerts\Storage\StorageInterface;
 
 class AlertsBootstrapper
 {
@@ -42,7 +43,7 @@ class AlertsBootstrapper
      *
      * @return \Cartalyst\Alerts\Alerts
      */
-    public function createAlerts()
+    public function createAlerts(): Alerts
     {
         $alerts = new Alerts();
 
@@ -50,7 +51,7 @@ class AlertsBootstrapper
 
         $this->createFlashNotifier($alerts);
 
-        $alerts->setDefaultNotifier(isset(static::$config['default']) ? static::$config['default'] : 'flash');
+        $alerts->setDefaultNotifier(static::$config['default'] ?? 'flash');
 
         return $alerts;
     }
@@ -58,10 +59,11 @@ class AlertsBootstrapper
     /**
      * Sets the configuration array.
      *
-     * @param  array  $config
+     * @param array $config
+     *
      * @return void
      */
-    public static function setConfig(array $config)
+    public static function setConfig(array $config): void
     {
         static::$config = $config;
     }
@@ -71,7 +73,7 @@ class AlertsBootstrapper
      *
      * @return array
      */
-    public static function getConfig()
+    public static function getConfig(): array
     {
         return static::$config;
     }
@@ -79,10 +81,11 @@ class AlertsBootstrapper
     /**
      * Creates and adds a new notifier.
      *
-     * @param  \Cartalyst\Alerts\Alerts  $alerts
+     * @param \Cartalyst\Alerts\Alerts $alerts
+     *
      * @return void
      */
-    protected function createNotifier($alerts)
+    protected function createNotifier(Alerts $alerts): void
     {
         $alerts->addNotifier(
             new Notifier('view', static::$config)
@@ -92,10 +95,11 @@ class AlertsBootstrapper
     /**
      * Creates and adds a new flash notifier.
      *
-     * @param  \Cartalyst\Alerts\Alerts  $alerts
+     * @param \Cartalyst\Alerts\Alerts $alerts
+     *
      * @return void
      */
-    protected function createFlashNotifier($alerts)
+    protected function createFlashNotifier(Alerts $alerts): void
     {
         if ($session = $this->createSession()) {
             $alerts->addNotifier(
@@ -109,14 +113,16 @@ class AlertsBootstrapper
      *
      * @return \Cartalyst\Alerts\Storage\StorageInterface|null
      */
-    protected function createSession()
+    protected function createSession(): ?StorageInterface
     {
-        if (class_exists('Illuminate\Filesystem\Filesystem') && class_exists('Illuminate\Session\FileSessionHandler')) {
+        if (class_exists(Filesystem::class) && class_exists(FileSessionHandler::class)) {
             $fileSessionHandler = new FileSessionHandler(new Filesystem(), __DIR__.'/../../../../../storage/sessions', 5);
 
             $store = new Store('alerts', $fileSessionHandler);
 
             return new NativeSession($store);
         }
+
+        return null;
     }
 }

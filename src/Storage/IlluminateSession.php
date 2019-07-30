@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Alerts package.
  *
  * NOTICE OF LICENSE
@@ -32,10 +32,10 @@ class IlluminateSession implements StorageInterface
     protected $session;
 
     /**
-     * Creates a new Illuminate based Session driver for Alerts.
+     * Constructor.
      *
-     * @param  \Illuminate\Session\Store  $session
-     * @param  string  $key
+     * @param \Illuminate\Session\Store $session
+     *
      * @return void
      */
     public function __construct(SessionStore $session)
@@ -44,7 +44,7 @@ class IlluminateSession implements StorageInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function get($key, $default = null)
     {
@@ -52,10 +52,10 @@ class IlluminateSession implements StorageInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public function flash($key, $value)
+    public function flash(string $key, $value): void
     {
-        return $this->session->flash($key, $value);
+        $this->session->flash($key, $value);
     }
 }

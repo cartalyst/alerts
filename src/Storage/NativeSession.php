@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Alerts package.
  *
  * NOTICE OF LICENSE
@@ -26,24 +26,25 @@ use Illuminate\Session\Store as SessionStore;
 class NativeSession extends IlluminateSession implements StorageInterface
 {
     /**
-     * Creates a new Native Session driver for Alerts.
+     * Constructor.
      *
-     * @param  \Illuminate\Session\Store  $session
-     * @param  string  $instance
-     * @param  string  $key
-     * @param  array  $config
+     * @param \Illuminate\Session\Store $session
+     * @param string|null               $instance
+     * @param string|null               $key
+     * @param array                     $config
+     *
      * @return void
      */
-    public function __construct(SessionStore $session, $instance = null, $key = null, $config = [])
+    public function __construct(SessionStore $session, string $instance = null, string $key = null, array $config = [])
     {
         parent::__construct($session, $instance, $key);
 
         // Cookie configuration
-        $lifetime = isset($config['lifetime']) ? $config['lifetime'] : 120;
-        $path     = isset($config['path']) ? $config['path'] : '/';
-        $domain   = isset($config['domain']) ? $config['domain'] : null;
-        $secure   = isset($config['secure']) ? $config['secure'] : false;
-        $httpOnly = isset($config['httpOnly']) ? $config['httpOnly'] : true;
+        $lifetime = $config['lifetime'] ?? 120;
+        $path     = $config['path']     ?? '/';
+        $domain   = $config['domain']   ?? null;
+        $secure   = $config['secure']   ?? false;
+        $httpOnly = $config['httpOnly'] ?? true;
 
         if (isset($_COOKIE[$session->getName()])) {
             $cookieId = $_COOKIE[$session->getName()];
@@ -53,7 +54,7 @@ class NativeSession extends IlluminateSession implements StorageInterface
             $session->setName($cookieId);
         }
 
-        $cookie = with(new CookieJar)->make($session->getName(), $session->getId(), $lifetime, $path, $domain, $secure, $httpOnly);
+        $cookie = with(new CookieJar())->make($session->getName(), $session->getId(), $lifetime, $path, $domain, $secure, $httpOnly);
 
         setcookie($cookie->getName(), $cookie->getValue(), $cookie->getExpiresTime(), $cookie->getPath(), $cookie->getDomain(), $cookie->isSecure(), $cookie->isHttpOnly());
 

@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Alerts package.
  *
  * NOTICE OF LICENSE
@@ -20,6 +20,7 @@
 
 namespace Cartalyst\Alerts\Native\Facades;
 
+use Cartalyst\Alerts\Alerts;
 use Cartalyst\Alerts\Native\AlertsBootstrapper;
 
 class Alert
@@ -41,13 +42,14 @@ class Alert
     /**
      * Constructor.
      *
-     * @param  \Cartalyst\Alerts\Native\AlertsBootstrapper  $bootstrapper
+     * @param \Cartalyst\Alerts\Native\AlertsBootstrapper|null $bootstrapper
+     *
      * @return void
      */
     public function __construct(AlertsBootstrapper $bootstrapper = null)
     {
         if ($bootstrapper === null) {
-            $bootstrapper = new AlertsBootstrapper;
+            $bootstrapper = new AlertsBootstrapper();
         }
 
         $this->alerts = $bootstrapper->createAlerts();
@@ -58,7 +60,7 @@ class Alert
      *
      * @return \Cartalyst\Alerts\Alerts
      */
-    public function getAlerts()
+    public function getAlerts(): Alerts
     {
         return $this->alerts;
     }
@@ -66,8 +68,9 @@ class Alert
     /**
      * Creates a new Native Bootstraper instance.
      *
-     * @param  \Cartalyst\Alerts\Native\AlertsBootstrapper  $bootstrapper
-     * @return void
+     * @param \Cartalyst\Alerts\Native\AlertsBootstrapper $bootstrapper
+     *
+     * @return \Cartalyst\Alerts\Native\Facades\Alert
      */
     public static function instance(AlertsBootstrapper $bootstrapper = null)
     {
@@ -81,14 +84,15 @@ class Alert
     /**
      * Handle dynamic, static calls to the object.
      *
-     * @param  string  $method
-     * @param  array  $args
+     * @param string $method
+     * @param array  $args
+     *
      * @return mixed
      */
-    public static function __callStatic($method, $args)
+    public static function __callStatic(string $method, array $args)
     {
         $instance = static::instance()->getAlerts();
 
-        return call_user_func_array([ $instance, $method ], $args);
+        return call_user_func_array([$instance, $method], $args);
     }
 }

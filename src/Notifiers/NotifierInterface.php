@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Alerts package.
  *
  * NOTICE OF LICENSE
@@ -27,24 +27,25 @@ interface NotifierInterface
      *
      * @return string
      */
-    public function getName();
+    public function getName(): string;
 
     /**
      * Flashes alerts.
      *
-     * @param  array|string  $messages
-     * @param  string  $type
-     * @param  string  $area
-     * @param  bool  $isFlash
-     * @param  string  $extra
+     * @param array|string $messages
+     * @param string       $type
+     * @param string       $area
+     * @param bool         $isFlash
+     * @param string|null  $extra
+     *
      * @return void
      */
-    public function alert($messages, $type, $area = 'default', $isFlash = false, $extra = null);
+    public function alert($messages, string $type, string $area = 'default', bool $isFlash = false, ?string $extra = null): void;
 
     /**
      * Returns all alerts.
      *
      * @return array
      */
-    public function get();
+    public function get(): array;
 }
