@@ -19,7 +19,7 @@
     ],
     "require": {
         "php": "^7.2",
-        "illuminate/support": "~5.0"
+        "illuminate/support": "^6.0"
     },
     "require-dev": {
         "cartalyst/php-cs-fixer-config": "^1.0",
@@ -27,8 +27,8 @@
         "phpunit/phpunit": "^8.0"
     },
     "suggest": {
-        "illuminate/session": "Required to send flash messages across requests. (~4.1)",
-        "illuminate/filesystem": "Required to send flash messages across requests. (~4.1)"
+        "illuminate/session": "Required to send flash messages across requests. (^6.0)",
+        "illuminate/filesystem": "Required to send flash messages across requests. (^6.0)"
     },
     "autoload": {
         "psr-4": {

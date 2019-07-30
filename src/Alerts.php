@@ -20,6 +20,7 @@
 
 namespace Cartalyst\Alerts;
 
+use Illuminate\Support\Arr;
 use Cartalyst\Alerts\Notifiers\NotifierInterface;
 
 class Alerts
@@ -252,7 +253,7 @@ class Alerts
         if ($filters) {
             $type = $exclude ? 'exclude' : 'include';
 
-            $this->filters[$type][$zone] = array_merge(array_get($this->filters, "{$type}.{$zone}", []), $filters);
+            $this->filters[$type][$zone] = array_merge(Arr::get($this->filters, "{$type}.{$zone}", []), $filters);
 
             $alerts = array_filter($alerts, function ($message) use ($zone, $filters, $exclude) {
                 if ($exclude) {
