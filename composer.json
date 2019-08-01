@@ -1,6 +1,6 @@
 {
     "name": "cartalyst/alerts",
-    "description": "Alerts allows you to easily pass alert messages to your views.",
+    "description": "Alerts allows you to easily pass alert messages to your Laravel 6 views.",
     "keywords": [
         "php",
         "cartalyst",
@@ -48,7 +48,7 @@
     "extra": {
         "component": "package",
         "branch-alias": {
-            "dev-master": "2.0.x-dev"
+            "dev-master": "3.0.x-dev"
         }
     },
     "scripts": {
