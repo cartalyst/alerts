@@ -1,44 +1,49 @@
 # Alerts
 
-[![Build Status](https://travis-ci.org/cartalyst/alerts.svg?branch=2.0)](https://travis-ci.org/cartalyst/alerts)
+[![Build Status][icon-travis]][link-travis]
+[![Software License][icon-license]][link-license]
+[![Latest Version on Packagist][icon-version]][link-packagist]
+[![Total Downloads][icon-downloads]][link-packagist]
 
-Alerts allows you to easily pass alerts to your views.
+Alerts allows you to easily pass alerts to your Laravel 6 views.
 
 An open source package by [Cartalyst](https://cartalyst.com), code well, rock on!
 
+## Version Matrix
+
+Version | Laravel   | PHP Version
+------- | --------- | ------------
+3.x     | 6.x       | >= 7.2
+2.x     | 5.x       | >= 5.4.0
+1.x     | 4.1 - 4.2 | >= 5.4.0
+
 ## Documentation
 
-Reader-friendly Documentation can be found here. [Alerts Manual](https://cartalyst.com/manual/alerts).
+Reader-friendly documentation can be found [here][link-docs].
 
-Raw files can be found via this projects docs/version branch.
+Using the package, but you're stuck? Found a bug? Have a question or suggestion for improving this package? Feel free to create an issue on GitHub, we'll try to address it as soon as possible.
 
-- [2.0](https://github.com/cartalyst/alerts/tree/docs/2.0)
-- [1.0](https://github.com/cartalyst/alerts/tree/docs/1.0)
+## Contributing
 
-## Changelog
+Thank you for your interest, here are some of the many ways to contribute.
 
-Important versions listed below. Refer to the [Changelog](CHANGELOG.md) for a full history of the project.
+- Check out our [contributing guide](/.github/CONTRIBUTING.md)
+- Look at our [code of conduct](/.github/CODE_OF_CONDUCT.md)
 
-- [2.0](CHANGELOG.md) - 2015-02-17
-- [1.0](CHANGELOG.md) - 2015-01-28
+## Security
 
-## Support
-
-The following support channels can be used for contact.
-
-- [Twitter](https://cartalyst.com/@twitter)
-- [Email](mailto:help@cartalyst.com)
-
-Bug reports, feature requests, and pull requests can be submitted by following our [Contribution Guide](CONTRIBUTING.md).
-
-## Contributing & Protocols
-
-- [Versioning](CONTRIBUTING.md#versioning)
-- [Coding Standards](CONTRIBUTING.md#coding-standards)
-- [Pull Requests](CONTRIBUTING.md#pull-requests)
+If you discover any security related issues, please email help@cartalyst.com instead of using the issue tracker.
 
 ## License
 
 This software is released under the [BSD 3-Clause](LICENSE) License.
 
-© 2011-2017 Cartalyst LLC, All rights reserved.
+[link-docs]:      https://cartalyst.com/manual/alerts
+[link-travis]:    https://travis-ci.org/cartalyst/alerts
+[link-license]:   https://opensource.org/licenses/MIT
+[link-packagist]: https://packagist.org/packages/cartalyst/alerts
+
+[icon-travis]:    https://travis-ci.org/cartalyst/alerts.svg?branch=3.0
+[icon-license]:   https://poser.pugx.org/cartalyst/alerts/license
+[icon-version]:   https://poser.pugx.org/cartalyst/alerts/version
+[icon-downloads]: https://poser.pugx.org/cartalyst/alerts/downloads
