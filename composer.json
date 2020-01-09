@@ -1,6 +1,6 @@
 {
     "name": "cartalyst/alerts",
-    "description": "Alerts allows you to easily pass alert messages to your Laravel 6 views.",
+    "description": "Alerts allows you to easily pass alert messages to your Laravel 7 views.",
     "keywords": [
         "php",
         "cartalyst",
@@ -18,8 +18,8 @@
         }
     ],
     "require": {
-        "php": "^7.2",
-        "illuminate/support": "^6.0"
+        "php": "^7.2.5",
+        "illuminate/support": "^7.0"
     },
     "require-dev": {
         "cartalyst/php-cs-fixer-config": "^1.0",
@@ -27,8 +27,8 @@
         "phpunit/phpunit": "^8.0"
     },
     "suggest": {
-        "illuminate/session": "Required to send flash messages across requests. (^6.0)",
-        "illuminate/filesystem": "Required to send flash messages across requests. (^6.0)"
+        "illuminate/session": "Required to send flash messages across requests. (^7.0)",
+        "illuminate/filesystem": "Required to send flash messages across requests. (^7.0)"
     },
     "autoload": {
         "psr-4": {
