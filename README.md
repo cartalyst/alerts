@@ -5,7 +5,7 @@
 [![Latest Version on Packagist][icon-version]][link-packagist]
 [![Total Downloads][icon-downloads]][link-packagist]
 
-Alerts allows you to easily pass alerts to your Laravel 6 views.
+Alerts allows you to easily pass alerts to your Laravel 7 views.
 
 An open source package by [Cartalyst](https://cartalyst.com), code well, rock on!
 
@@ -13,6 +13,7 @@ An open source package by [Cartalyst](https://cartalyst.com), code well, rock on
 
 Version | Laravel   | PHP Version
 ------- | --------- | ------------
+4.x     | 7.x       | >= 7.2.5
 3.x     | 6.x       | >= 7.2
 2.x     | 5.x       | >= 5.4.0
 1.x     | 4.1 - 4.2 | >= 5.4.0
@@ -43,7 +44,7 @@ This software is released under the [BSD 3-Clause](LICENSE) License.
 [link-license]:   https://opensource.org/licenses/MIT
 [link-packagist]: https://packagist.org/packages/cartalyst/alerts
 
-[icon-travis]:    https://travis-ci.org/cartalyst/alerts.svg?branch=3.0
+[icon-travis]:    https://travis-ci.org/cartalyst/alerts.svg?branch=4.x
 [icon-license]:   https://poser.pugx.org/cartalyst/alerts/license
 [icon-version]:   https://poser.pugx.org/cartalyst/alerts/version
 [icon-downloads]: https://poser.pugx.org/cartalyst/alerts/downloads
