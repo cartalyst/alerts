@@ -41,11 +41,11 @@ If you discover any security related issues, please email help@cartalyst.com ins
 This software is released under the [BSD 3-Clause](LICENSE) License.
 
 [link-docs]:      https://cartalyst.com/manual/alerts
-[link-travis]:    https://travis-ci.org/cartalyst/alerts
+[link-travis]:    https://travis-ci.com/cartalyst/alerts
 [link-license]:   https://opensource.org/licenses/MIT
 [link-packagist]: https://packagist.org/packages/cartalyst/alerts
 
-[icon-travis]:    https://travis-ci.org/cartalyst/alerts.svg?branch=5.x
+[icon-travis]:    https://travis-ci.com/cartalyst/alerts.svg?branch=5.x
 [icon-license]:   https://poser.pugx.org/cartalyst/alerts/license
 [icon-version]:   https://poser.pugx.org/cartalyst/alerts/version
 [icon-downloads]: https://poser.pugx.org/cartalyst/alerts/downloads
