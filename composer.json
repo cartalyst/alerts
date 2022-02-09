@@ -22,8 +22,8 @@
         "illuminate/support": "^9.0"
     },
     "require-dev": {
-        "cartalyst/php-cs-fixer-config": "^1.0",
-        "mockery/mockery": "^1.0",
+        "cartalyst/php-cs-fixer-config": "^2.0",
+        "mockery/mockery": "^1.4.2",
         "phpunit/phpunit": "^9.0"
     },
     "suggest": {
