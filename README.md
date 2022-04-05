@@ -5,7 +5,7 @@
 [![Latest Version on Packagist][icon-version]][link-packagist]
 [![Total Downloads][icon-downloads]][link-packagist]
 
-Alerts allows you to easily pass alerts to your Laravel 8 views.
+Alerts allows you to easily pass alerts to your Laravel views.
 
 An open source package by [Cartalyst](https://cartalyst.com), code well, rock on!
 

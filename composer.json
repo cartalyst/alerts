@@ -1,6 +1,6 @@
 {
     "name": "cartalyst/alerts",
-    "description": "Alerts allows you to easily pass alert messages to your Laravel 8 views.",
+    "description": "Alerts allows you to easily pass alert messages to your Laravel views.",
     "keywords": [
         "php",
         "cartalyst",
