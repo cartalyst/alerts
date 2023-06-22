@@ -1,15 +1,11 @@
 language: php
 
 php:
-  - 8.0
   - 8.1
 
 cache:
   directories:
     - $HOME/.composer/cache
-
-before_install:
-  - phpenv config-rm xdebug.ini || true
 
 install:
   - travis_retry composer install
