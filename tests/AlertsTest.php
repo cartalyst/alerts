@@ -14,7 +14,7 @@
  * @version    6.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
- * @copyright  (c) 2011-2022, Cartalyst LLC
+ * @copyright  (c) 2011-2023, Cartalyst LLC
  * @link       https://cartalyst.com
  */
 
@@ -30,6 +30,11 @@ use Cartalyst\Alerts\Notifiers\NotifierInterface;
 
 class AlertsTest extends TestCase
 {
+    /**
+     * Alerts instance
+     */
+    protected $alerts;
+
     /**
      * {@inheritdoc}
      */
