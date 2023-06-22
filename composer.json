@@ -27,8 +27,8 @@
         "phpunit/phpunit": "^10.0"
     },
     "suggest": {
-        "illuminate/session": "Required to send flash messages across requests. (^8.0)",
-        "illuminate/filesystem": "Required to send flash messages across requests. (^8.0)"
+        "illuminate/session": "Required to send flash messages across requests. (^10.0)",
+        "illuminate/filesystem": "Required to send flash messages across requests. (^10.0)"
     },
     "autoload": {
         "psr-4": {
@@ -48,7 +48,7 @@
     "extra": {
         "component": "package",
         "branch-alias": {
-            "dev-master": "6.0.x-dev"
+            "dev-master": "7.0.x-dev"
         }
     },
     "scripts": {
