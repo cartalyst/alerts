@@ -12,7 +12,8 @@ An open source package by [Cartalyst](https://cartalyst.com), code well, rock on
 ## Version Matrix
 
 Version | Laravel   | PHP Version
-------- | --------- | ------------
+------- |-----------| ------------
+8.x     | 11.x      | >= 8.2
 7.x     | 10.x      | >= 8.1
 6.x     | 9.x       | >= 8.0
 5.x     | 8.x       | >= 7.3
@@ -47,7 +48,7 @@ This software is released under the [BSD 3-Clause](LICENSE) License.
 [link-license]:   https://opensource.org/licenses/MIT
 [link-packagist]: https://packagist.org/packages/cartalyst/alerts
 
-[icon-travis]:    https://travis-ci.com/cartalyst/alerts.svg?branch=7.x
+[icon-travis]:    https://travis-ci.com/cartalyst/alerts.svg?branch=8.x
 [icon-license]:   https://poser.pugx.org/cartalyst/alerts/license
 [icon-version]:   https://poser.pugx.org/cartalyst/alerts/version
 [icon-downloads]: https://poser.pugx.org/cartalyst/alerts/downloads
