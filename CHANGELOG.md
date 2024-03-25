@@ -1,6 +1,6 @@
 # Changelog
 
-### v8.0.0 - TBA
+### v8.0.0 - 2024-03-25
 
 - Add Laravel 11 support
 
